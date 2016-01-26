@@ -3,7 +3,7 @@ Seed repository for homeworks in cs181, s16
 
 Welcome to CS181! This repository will house your homework assignments.
 
-If you are reading this, the name of the repository should be cs181-s16-homeworks-<YOUR GITHUB ID>. If that's what you see, you should already be logged into your github account and have your own private repository (this one) for your homeworks. You're good to read on.
+If you are reading this, the name of the repository should be cs181-s16-homeworks-YOUR GITHUB ID. If that's what you see, you should already be logged into your github account and have your own private repository (this one) for your homeworks. You're good to read on.
 
 If you don't see your github id at the end of the repository name, you need to find the link on [canvas](https://canvas.harvard.edu/courses/9660/) to create your own private repository.
 
