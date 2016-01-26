@@ -7,7 +7,7 @@ If you are reading this, the name of the repository should be cs181-s16-homework
 
 If you don't see your github id at the end of the repository name, you need to find the link on [canvas](https://canvas.harvard.edu/courses/9660/) to create your own private repository.
 
-If you don't know what any of this means, stop drop and contact a TF. These instructions only apply to your private repo.
+If you don't know what any of this means, stop drop and contact a [Ryan](rjb647@g.harvard.edu), the TF who administers this. These instructions only apply to your private repo.
 
 ## How this repository works
 
@@ -19,7 +19,7 @@ git merge seed_repo/master -m "Fetched new assignment"
 ```
 These commands (1) tell your local git repository where the seed repo is (and calls is "seed_repo"), (2) gets that repo from github.com, and (3) merges it with your local files. A final, fourth, step would be to push to your remote repository so it shows up on the web and your TFs can see it.
 
-In fact, try that now to make sure you don't get any errors, and contact a TF via canvas if you do.
+In fact, try that now to make sure you don't get any errors, and contact a TF via [email](rjb647@g.harvard.edu) or [canvas](https://canvas.harvard.edu/courses/9660/) if you do.
 
 ## How homeworks work
 
