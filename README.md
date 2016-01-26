@@ -7,7 +7,7 @@ If you are reading this, the name of the repository should be cs181-s16-homework
 
 If you don't see your github id at the end of the repository name, you need to find the link on [canvas](https://canvas.harvard.edu/courses/9660/) to create your own private repository.
 
-If you don't know what any of this means, stop drop and contact a [Ryan](rjb647@g.harvard.edu), the TF who administers this. These instructions only apply to your private repo.
+If you don't know what any of this means, stop drop and contact a [Ryan](mailto:rjb647@g.harvard.edu), the TF who administers this. These instructions only apply to your private repo.
 
 ## How this repository works
 
