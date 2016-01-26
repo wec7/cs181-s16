@@ -21,7 +21,7 @@ These commands (1) tell your local git repository where the seed repo is (and ca
 
 In fact, try that now to make sure you don't get any errors, and contact a TF via canvas if you do.
 
-## How homework work
+## How homeworks work
 
 For each assignment, you'll be given a number of files. One of them will be a .tex file, with some blanks for where the solutions go. That's where the solutions go. When you complete the homeworks, you need to push the .tex file to this repository and submit the pdfs via canvas.
 
