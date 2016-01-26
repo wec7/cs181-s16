@@ -11,13 +11,13 @@ If you don't know what any of this means, stop drop and contact a TF. These inst
 
 ## How this repository works
 
-This repository is a copy of a "seed" repositry maintained by the TFs. Right now there should be five empty folders in this reposity. Throughout this semester, your TFs will add homework assignments to the seed repository, and you will be responsible for copying them into your repository ("fetch" and "merge" in git-speak). Assuming you've already cloned your repository locally, you get the new files by:
+This repository is a copy of a "seed" repository maintained by the TFs. Right now there should be five empty folders in this repository. Throughout this semester, your TFs will add homework assignments to the seed repository, and you will be responsible for copying them into your repository ("fetch" and "merge" in git-speak). Assuming you've already cloned your repository locally, you get the new files by:
 ```
 git remote add seed_repo https://github.com/harvard-ml-courses/cs181-s16-homeworks.git # only needs to be done once
 git fetch seed_repo
 git merge seed_repo/master -m "Fetched new assignment"
 ```
-These commands (1) tell your local git repository where the seed repo is (and calls is "seed_repo"), (2) gets that repo from github.com, and (3) merges it with your local files. A final, fourth, step would be to push to your rempote repository so it shows up on the web and your TFs can see it.
+These commands (1) tell your local git repository where the seed repo is (and calls is "seed_repo"), (2) gets that repo from github.com, and (3) merges it with your local files. A final, fourth, step would be to push to your remote repository so it shows up on the web and your TFs can see it.
 
 In fact, try that now to make sure you don't get any errors, and contact a TF via canvas if you do.
 
