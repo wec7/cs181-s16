@@ -25,6 +25,8 @@ In fact, try that now to make sure you don't get any errors, and contact a TF vi
 
 For each assignment, you'll be given a number of files. One of them will be a .tex file, with some blanks for where the solutions go. That's where the solutions go. When you complete the homeworks, you need to push the .tex file to this repository and submit the pdfs via canvas.
 
+Also, please push any code for the homeworks to the repository.
+
 ## Caveats
 
 This is a new system that we're trying out, so if are having any trouble, please reach out to a TF. If you need help acclimatizing to git, again, reach out. We're here to help.
