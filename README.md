@@ -11,7 +11,7 @@ If you don't know what any of this means, stop drop and contact a [Ryan](mailto:
 
 ## How this repository works
 
-This repository is a copy of a "seed" repository maintained by the TFs. Right now there should be five empty folders in this repository. Throughout this semester, your TFs will add homework assignments to the seed repository, and you will be responsible for copying them into your repository ("fetch" and "merge" in git-speak). Assuming you've already cloned your repository locally, you get the new files by:
+This repository is a copy of a "seed" repository maintained by the TFs. Right now there should be five folders in this repository. Throughout this semester, your TFs will add homework assignments to the seed repository, and you will be responsible for copying them into your repository ("fetch" and "merge" in git-speak). Assuming you've already cloned your repository locally, you get the new files by:
 ```
 git remote add seed_repo https://github.com/harvard-ml-courses/cs181-s16-homeworks.git # only needs to be done once
 git fetch seed_repo
