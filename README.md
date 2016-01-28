@@ -17,7 +17,7 @@ git remote add seed_repo https://github.com/harvard-ml-courses/cs181-s16-homewor
 git fetch seed_repo
 git merge seed_repo/master -m "Fetched new assignment"
 ```
-These commands (1) tell your local git repository where the seed repo is (and calls is "seed_repo"), (2) gets that repo from github.com, and (3) merges it with your local files. A final, fourth, step would be to push to your remote repository so it shows up on the web and your TFs can see it.
+These commands (1) tell your local git repository where the seed repo is (and calls it "seed_repo"), (2) gets that repo from github.com, and (3) merges it with your local files. A final, fourth, step would be to push to your remote repository so it shows up on the web and your TFs can see it.
 
 In fact, try that now to make sure you don't get any errors, and contact a TF via [email](rjb647@g.harvard.edu) or [canvas](https://canvas.harvard.edu/courses/9660/) if you do.
 
