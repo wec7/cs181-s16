@@ -1,6 +1,6 @@
 # Homework 1
 
-For this assignment, you will be exploring various regression tasks. There are two non-coding problems, and one coding problem. Please do the coding problem in Python, by directly modifying the given [distribution code](linreg.py).
+For this assignment, you will be exploring various regression tasks. There are two non-coding problems, and one coding problem. Please do the coding problem in Python, by directly modifying the given [distribution code](linreg.py), as explained below.
 
 ## Important Files
 - [homework1-regression.tex](homework1-regression.tex): This is the LaTeX file where you should write up your solutions for all three of the problems. Please make sure that you also push the compiled .pdf file that LaTeX generates. Also make sure to submit that pdf to Canvas.
