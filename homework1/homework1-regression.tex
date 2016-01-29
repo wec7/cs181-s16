@@ -57,8 +57,9 @@ Please type your solutions after the corresponding problems using this \LaTeX\ t
 %\subsection*{1. Centering and Ridge Regression [7pts]}
 
 Consider a data set in which each data input vector $\boldx \in \mathbb{R}^n$ is
-centered such that $\forall x, \sum_i x_i = 0$. Let $X \in \mathbb{R}^{n \times
-m}$ be the input matrix, the columns of which are the input vectors. We define:
+centered, meaning $\forall \boldx, \sum_i x_i = 0$. Let $\boldX \in
+\mathbb{R}^{n \times m}$ be the input matrix, the columns of which are the input
+vectors. Let $\lambda$ be a positive constant. We define:
 
 $$J(\boldw, w_0) = (\boldy - \boldX \boldw - w_0 {\bf 1 })^T (\boldy - \boldX
 \boldw - w_0 {\bf 1 }) + \lambda \boldw^T \boldw$$
@@ -67,7 +68,8 @@ $$J(\boldw, w_0) = (\boldy - \boldX \boldw - w_0 {\bf 1 })^T (\boldy - \boldX
   \item[(a)] Compute the gradient of $J(\boldw, w_0)$ with respect to $w_0$.
     Simplify as much as you can for full credit.
   \item[(b)] Compute the gradient of $J(\boldw, w_0)$ with respect to $\boldw$.
-    Simplify as much as you can for full credit.
+    Simplify as much as you can for full credit. Make sure to give your answer
+    in matrix form.
   \item[(c)] Suppose that $\lambda > 0$. Knowing that $J$ is a convex function
     of its arguments, conclude that a global optimizer of
     $J(\boldw, w_0)$ is
@@ -75,9 +77,7 @@ $$J(\boldw, w_0) = (\boldy - \boldX \boldw - w_0 {\bf 1 })^T (\boldy - \boldX
       w_0 &= \frac{1}{n} \sum_i y_i \\
       \boldw &= (\boldX^T \boldX + \lambda \boldI)^{-1} \boldX^T \boldy
     \end{align}
-    (Hint: you can state the relevant properties of the function $J$ without
-    proving them)
-
+    Before taking the inverse of a matrix, prove that it is invertible.
 \end{itemize}
 \end{problem}
 
@@ -151,7 +151,12 @@ Do this by writing $\ln p(\boldw \given \boldt)$ as a function of $E_D(\boldw)$ 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \subsection*{3. Modeling Changes in Congress [10pts]}
- The objective of this problem is to learn about linear regression with basis functions by modeling the average age of the US Congress. Download the file \verb|congress-ages.csv| from the course website.  It has two columns.  The first one is an integer that indicates the Congress number. Currently, the 114th Congress is in session. The second is the average age of that members of that Congress.  The data file looks like this:
+ The objective of this problem is to learn about linear regression with basis
+ functions by modeling the average age of the US Congress. The file
+ \verb|congress-ages.csv| contains the data you will use for this problem.  It
+ has two columns.  The first one is an integer that indicates the Congress
+ number. Currently, the 114th Congress is in session. The second is the average
+ age of that members of that Congress.  The data file looks like this:
 \begin{csv}
 congress,average_age
 80,52.4959
@@ -173,7 +178,10 @@ and you can see a plot of the data in Figure~\ref{fig:congress}.
 \end{figure}
 
 \begin{problem}[Modeling Changes in Congress, 10pts]
-Implement basis function regression with ordinary least squares with the above data. Some sample Python code is provided in \verb|linreg.py|.  Plot the data and regression lines for the simple linear case, and for each of the following sets of basis functions:
+Implement basis function regression with ordinary least squares with the above
+data. Some sample Python code is provided in \verb|linreg.py|, which implements
+linear regression.  Plot the data and regression lines for the simple linear
+case, and for each of the following sets of basis functions:
 \begin{itemize}
 	\item[(a)] $\phi_j(x) = x^j$ for $j=1, \ldots, 7$
 	\item[(b)] $\phi_j(x) = x^j$ for $j=1, \ldots, 3$
@@ -181,7 +189,10 @@ Implement basis function regression with ordinary least squares with the above d
 	\item[(d)] $\phi_j(x) = \sin\{ x / j \}$ for $j=1, \ldots, 7$
 	\item[(e)] $\phi_j(x) = \sin\{ x / j \}$ for $j=1, \ldots, 20$
 \end{itemize}
-	In addition to the plots, provide one or two sentences for each, explaining whether you think it is fitting well, overfitting or underfitting.  If it does not fit well, provide a sentence explaining why. A good fit should capture the most important trends in the data.
+  In addition to the plots, provide one or two sentences for each, explaining
+  whether you think it is fitting well, overfitting or underfitting.  If it does
+  not fit well, provide a sentence explaining why. A good fit should capture the
+  most important trends in the data.
 	\end{problem}
 
 \subsubsection*{Solution}
@@ -201,14 +212,5 @@ Implement basis function regression with ordinary least squares with the above d
 Approximately how long did this homework take you to complete?
 \end{problem}
 \textbf{Answer:}
-
-
-\vspace{1cm}
-
-\subsubsection*{Changelog}
-\begin{itemize}
-\item \textbf{v1.0} -- 28 January 2015 at 13:00
-\item \textbf{v1.1} -- 29 January 2015 at 09:00. Removed extra $\lambda$ in $E_W(\boldw)$, minor formatting edits.
-\end{itemize}
 
 \end{document}
