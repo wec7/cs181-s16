@@ -140,31 +140,35 @@ Do this by writing $\ln p(\boldw \given \boldt)$ as a function of $E_D(\boldw)$ 
 
 \subsubsection*{Solution}
 
+Write $\ln p(\boldw \given \boldt)$ as a function of $E_D(\boldw)$ and $E_W(\boldw)$, i.e.
+\begin{align*}
+  \ln p(\boldw \given \boldt) &= \ln p(\boldw \given \alpha) + \ln p(\boldt \given \boldw) \\
+  &= \ln \mathcal{N}(\boldw \given \bold0, \alpha^{-1}\ident) + \ln \prod_{n=1}^N \mcN(t_n \given \boldw^\trans \bphi(\boldx_n), \beta^{-1}) \\
+  &= \ln \mathcal{N}(\boldw \given \bold0, \alpha^{-1}\ident) + \sum_{n=1}^N \ln \mcN(t_n \given \boldw^\trans \bphi(\boldx_n), \beta^{-1})
+\end{align*}
+where the multivariate normal distribution formula is 
+$$
+\mathcal{N}(\boldx \given \boldsymbol\mu, \boldsymbol\Sigma) = \frac{1}{\sqrt{(2\pi)^{n}|\boldsymbol\Sigma|}}
+\exp\left(-\frac{1}{2}({\mathbf x}-{\boldsymbol\mu})^\mathrm{T}{\boldsymbol\Sigma}^{-1}({\mathbf x}-{\boldsymbol\mu})
+\right)
+$$
+via substituting, we derive
+\begin{align*}
+  \ln p(\boldw \given \boldt) = \left(\ln \frac{1}{\sqrt{(2\pi)^{n}\alpha^{-n}}} - \frac{1}{2}\alpha\boldw^T\boldw \right) + \left(\ln \frac{1}{\sqrt{(2\pi)^{n}\beta}} - \frac{1}{2}\beta\sum_{n = 1}^N (t_n - \boldw^\trans \bphi(\boldx_n))^2 \right)
+\end{align*}
 
+Dropping the constant terms, we have
+\begin{align*}
+  \ln p(\boldw \given \boldt) - \boldC &= - \frac{1}{2}\alpha\boldw^T\boldw - \frac{1}{2}\beta\sum_{n = 1}^N (t_n - \boldw^\trans \bphi(\boldx_n))^2 \\
+  &= -\alpha E_W(\boldw) - \beta E_D(\boldw)
+\end{align*}
 
+Taking $\lambda = \alpha / \beta$, 
+$$
+\frac{1}{\beta}\left(\ln p(\boldw \given \boldt) - \boldC\right) = -\lambda E_W(\boldw) - E_D(\boldw)
+$$
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Therefore, maximizing the posterior is equivalent to maximize $-\lambda E_W(\boldw) - E_D(\boldw)$, or in other words, minimize the regularized error terms, i.e. $E_D(\boldw) + \lambda E_W(\boldw)$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 3
