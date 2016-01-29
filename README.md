@@ -23,7 +23,7 @@ In fact, try that now to make sure you don't get any errors, and contact a TF vi
 
 ## How homeworks work
 
-For each assignment, you'll be given a number of files. One of them will be a .tex file, with some blanks for where the solutions go. That's where the solutions go. When you complete the homeworks, you need to push the .tex file to this repository and submit the pdfs via canvas.
+For each assignment, you'll be given a number of files. One of them will be a .tex file, with some blanks for where the solutions go. That's where the solutions go. When you complete the homeworks, you need to push the .tex file to this repository and submit the pdfs via canvas. Please both push the pdfs to this repository, and submit them on Canvas.
 
 Also, please push any code for the homeworks to the repository.
 
