@@ -1,13 +1,12 @@
 \documentclass[submit]{harvardml}
 
 % Put in your full name and email address.
-\name{Your Name}
-\email{email@fas.harvard.edu}
+\name{Weiyi Chen}
+\email{wec427@g.harvard.edu}
 
 % List any people you worked with.
 \collaborators{%
-  John Doe,
-  Fred Doe
+  N.A.
 }
 
 % You don't need to change these.
@@ -83,15 +82,36 @@ $$J(\boldw, w_0) = (\boldy - \boldX \boldw - w_0 {\bf 1 })^T (\boldy - \boldX
 
 \subsubsection*{Solution}
 
-
-
-
-
-
-
-
-
-
+\begin{itemize}
+  \item[(a)] The gradient of $J(w, w_0)$ with respect to $w_0$ is 
+  \begin{align*}
+    \nabla_{w_0} J(\boldw, w_0) &= 2(\boldy - \boldX\boldw - w_0\bold1)^T \cdot (-\bold1) \\
+    &= -2(\boldy - \boldX\boldw - w_0\bold1)^T \bold1 \\
+    &= -2(\boldy - \boldX\boldw)^T\bold1 + 2w_0n \\
+    &= -2\boldy^T\cdot\bold1 + \boldw^T\boldX^T\bold1 + 2w_0n  \\
+    &= -2\sum_iy_i + \boldw^T \bold0 + 2w_0n \\
+    &= -2\sum_iy_i + 2w_0n
+  \end{align*}
+  
+  \item[(b)] The gradient of $J(w, w_0)$ with respect to $\boldw$ is
+  \begin{align*}
+    \nabla_{\boldw} J(\boldw, w_0) &= 2(\boldy - \boldX\boldw - w_0\bold1)^T \cdot (-\boldX) + 2\lambda \boldw^T \\
+    &= -2(\boldy - \boldX\boldw - w_0\bold1)^T \boldX + 2\lambda \boldw^T  \\
+    &= 2\boldw^T(\boldX^T\boldX + \lambda\boldI) - 2\boldy^T\boldX + 2w_0\bold1^T\boldX \\
+    &= 2\boldw^T(\boldX^T\boldX + \lambda\boldI) - 2\boldy^T\boldX + 2w_0\bold0 \\
+    &= 2\boldw^T(\boldX^T\boldX + \lambda\boldI) - 2\boldy^T\boldX
+  \end{align*}
+  
+  \item[(c)] A global optimizer of $J(\boldw, w_0)$ is derived by letting the above gradients as zero, i.e.
+  \begin{align*}
+    \nabla_{w_0} J(\boldw, w_0) = -2\sum_iy_i + 2w_0n = 0 &\Rightarrow w_0 = \frac{1}{n} \sum_i y_i \\
+    \nabla_{\boldw} J(\boldw, w_0) = 2\boldw^T(\boldX^T\boldX + \lambda\boldI) - 2\boldy^T\boldX = \bold0 &\Rightarrow 
+    \boldw = (\boldX^T \boldX + \lambda \boldI)^{-1} \boldX^T \boldy
+  \end{align*}
+  In order to prove the inverse of $\boldX^T \boldX + \lambda \boldI$ exists, we can verify its determinant is non-zero, i.e.
+  $$ det(\boldX^T\boldX + \lambda\boldI) = |\boldX|^2 + \lambda > 0 $$ 
+  given $|\boldX|^2 \ge 0$ and $\lambda > 0$, therefore $\boldX^T \boldX + \lambda \boldI$ is invertible.
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 2
@@ -183,17 +203,17 @@ data. Some sample Python code is provided in \verb|linreg.py|, which implements
 linear regression.  Plot the data and regression lines for the simple linear
 case, and for each of the following sets of basis functions:
 \begin{itemize}
-	\item[(a)] $\phi_j(x) = x^j$ for $j=1, \ldots, 7$
-	\item[(b)] $\phi_j(x) = x^j$ for $j=1, \ldots, 3$
-	\item[(c)] $\phi_j(x) = \sin\{ x / j \}$ for $j=1, \ldots, 4$
-	\item[(d)] $\phi_j(x) = \sin\{ x / j \}$ for $j=1, \ldots, 7$
-	\item[(e)] $\phi_j(x) = \sin\{ x / j \}$ for $j=1, \ldots, 20$
+  \item[(a)] $\phi_j(x) = x^j$ for $j=1, \ldots, 7$
+  \item[(b)] $\phi_j(x) = x^j$ for $j=1, \ldots, 3$
+  \item[(c)] $\phi_j(x) = \sin\{ x / j \}$ for $j=1, \ldots, 4$
+  \item[(d)] $\phi_j(x) = \sin\{ x / j \}$ for $j=1, \ldots, 7$
+  \item[(e)] $\phi_j(x) = \sin\{ x / j \}$ for $j=1, \ldots, 20$
 \end{itemize}
   In addition to the plots, provide one or two sentences for each, explaining
   whether you think it is fitting well, overfitting or underfitting.  If it does
   not fit well, provide a sentence explaining why. A good fit should capture the
   most important trends in the data.
-	\end{problem}
+  \end{problem}
 
 \subsubsection*{Solution}
 
