@@ -1,6 +1,6 @@
 # Homework 1
 
-For this assignment, you will be exploring various regression tasks. There are two non-coding problems, and one coding problem. Please do the coding problem in Python, by directly modifying the given distribution code.
+For this assignment, you will be exploring various regression tasks. There are two non-coding problems, and one coding problem. Please do the coding problem in Python, by directly modifying the given [distribution code](linreg.py).
 
 ## Important Files
 
