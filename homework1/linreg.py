@@ -77,5 +77,5 @@ if __name__ == '__main__':
 	plot(basis_func_type='polynomial', degree = 7)
 	plot(basis_func_type='polynomial', degree = 3)
 	plot(basis_func_type='sin', degree = 4)
-	plot(basis_func_type='sin', degree = 7)sub
+	plot(basis_func_type='sin', degree = 7)
 	plot(basis_func_type='sin', degree = 20)
