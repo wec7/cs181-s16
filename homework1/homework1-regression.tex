@@ -220,21 +220,42 @@ case, and for each of the following sets of basis functions:
   \end{problem}
 
 \subsubsection*{Solution}
+ Basis function regression is implemented in \verb|linreg.py|. Below are the plots for each case - 
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.45\textwidth]{congress-ages-polynomial-1}
+\includegraphics[width=0.45\textwidth]{congress-ages-polynomial-7}
+\caption{The data and regression line for the simple linear case and (a)}
+\end{figure}
 
+\begin{figure}[h]
+\includegraphics[width=0.45\textwidth]{congress-ages-polynomial-3}
+\includegraphics[width=0.45\textwidth]{congress-ages-sin-4}
+\caption{The data and regression line for cases (b) and (c)}
+\end{figure}
 
+\begin{figure}[h]
+\includegraphics[width=0.45\textwidth]{congress-ages-sin-7}
+\includegraphics[width=0.45\textwidth]{congress-ages-sin-20}
+\caption{The data and regression line for cases (d) and (e)}
+\end{figure}
 
+Following is my thinking of fitting well or not for each case - 
+\begin{itemize}
+  \item Fitting well: case (a), case (b), case (c), case (d)
+  \item Overfitting: case (e)
+  \item Underfitting: the simple linear case
+\end{itemize}
 
+The simple linear case does not fit well because it cannot capture the most important trends in the data, most of points are off from the line far away and the straight line cannot capture the curve indicated by the points either.
 
-
-
-
-
+Case (e) is overfitting, though it captures every point exactly, it also fit to the error of each point, which is not expected. When the regression line goes out of the x range of the data points, the curve is going off far away to negative values very quickly, which is clearly unreasonable from our perspective.
 
 \newpage
 \begin{problem}[Calibration, 1pt]
 Approximately how long did this homework take you to complete?
 \end{problem}
 \textbf{Answer:}
-
+3 hours. Roughly 1 hour for each question, including investigation time on unfamiliar knowledge. 
 \end{document}
