@@ -38,7 +38,7 @@
   framerule=0pt,
   basicstyle=\ttfamily,
   columns=fullflexible}}{}
- 
+
 
 \begin{document}
 \begin{center}
@@ -55,10 +55,9 @@ Please type your solutions after the corresponding problems using this \LaTeX\ t
 \begin{problem}[Centering and Ridge Regression, 7pts]
 %\subsection*{1. Centering and Ridge Regression [7pts]}
 
-Consider a data set in which each data input vector $\boldx \in \mathbb{R}^n$ is
-centered, meaning $\forall \boldx, \sum_i x_i = 0$. Let $\boldX \in
-\mathbb{R}^{n \times m}$ be the input matrix, the columns of which are the input
-vectors. Let $\lambda$ be a positive constant. We define:
+Consider a data set in which each data input vector $\boldx \in \mathbb{R}^m$. Let $\boldX \in
+\mathbb{R}^{n \times m}$ be the input matrix, the rows of which are the input
+vectors, and the columns of which are centered at 0. Let $\lambda$ be a positive constant. We define:
 
 $$J(\boldw, w_0) = (\boldy - \boldX \boldw - w_0 {\bf 1 })^T (\boldy - \boldX
 \boldw - w_0 {\bf 1 }) + \lambda \boldw^T \boldw$$
