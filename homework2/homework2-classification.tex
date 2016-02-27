@@ -1,0 +1,256 @@
+\documentclass[submit]{harvardml}
+
+% Put in your full name and email address.
+\name{Your Name}
+\email{email@fas.harvard.edu}
+
+% List any people you worked with.
+\collaborators{%
+  John Doe,
+  Fred Doe
+}
+
+% You don't need to change these.
+\course{CS181-S16}
+\assignment{Assignment \#2}
+\duedate{5:00pm February 26, 2016}
+
+\usepackage[OT1]{fontenc}
+\usepackage[colorlinks,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage[pdftex]{graphicx}
+\usepackage{subfig}
+\usepackage{fullpage}
+\usepackage{palatino}
+\usepackage{mathpazo}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage{todonotes}
+\usepackage{listings}
+\usepackage{common}
+\usepackage{bm}
+
+\usepackage[mmddyyyy,hhmmss]{datetime}
+
+\definecolor{verbgray}{gray}{0.9}
+
+\lstnewenvironment{csv}{%
+  \lstset{backgroundcolor=\color{verbgray},
+  frame=single,
+  framerule=0pt,
+  basicstyle=\ttfamily,
+  columns=fullflexible}}{}
+
+\begin{document}
+\begin{center}
+{\Large Homework 2: Linear Classification}\\
+\end{center}
+
+There is a mathematical component and a programming
+component to this homework. Please submit your PDF to Canvas, and push everything in Github.
+
+This homework is about multi-class classification. Whereas in more simple
+classification models we build classifiers that discriminate between two classes,
+in multi-class regression, we discriminate between three or more classes.  As
+usual, we imagine that we have the input matrix $\boldX \in \reals^{N \times D}$
+(or perhaps they have been mapped to some basis $\bm{\Phi}$, without loss
+of generality) but that our outputs are now ``one-hot coded''.  What that means
+is that, if there are~$K$ output classes, rather than representing the output
+labels as integers~${1,2,\ldots,K}$, we represent them as a binary vectors of
+length~$K$.  These vectors are zero in each component except for the one
+corresponding to the correct label, and that entry has a one.  So, if there are
+7 classes and a particular datum has label 3, then the target vector would
+be~${[0,0,1,0,0,0,0]}$ (assuming the labels are 1-indexed).
+
+In the first problem, you will be exploring the properties of the softmax
+function, which is central to multiclass logistic regression.  In the second
+problem, we will have you dive into the matrix algebra and methods behind
+generative classifications.  Finally, in the third problem, you will implement a
+generative classifier and logistic regression from close to scratch, and the
+first two problems should inform this!
+
+%\subsection*{1. Properties of Softmax [5pts]}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Problem 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{problem}[Properties of Softmax , 5pts]
+
+Logistic regression is a discriminative probabilistic model: a prediction
+consists of a distribution over the different classes. In other words, logistic
+regression outputs a vector of nonnegative numbers that sum to one.
+
+The softmax function generalizes the logistic sigmoid to the case of $K$
+classes: it takes as input a vector, and outputs a K dimensional vector in the
+range $[0,1]$ whose components sum to $1$:
+
+\[ \bm{\sigma}(\mathbf{z}) = softmax(\mathbf{z}) =
+\frac{\exp(\mathbf{z})}{\sum_i\exp(z_i)}\]
+
+In logistic regression, we often use the softmax-based parameterization over $K$ vectors $\{\boldw_k\}$:
+
+\begin{align*}
+  \Pr(t_{nk}=1 \given \boldX, \{\boldw_{k'}\}^K_{k'=1})
+  &= \frac{ \exp\{ \boldw_k^{\trans}\boldx_n \} }
+  { \sum_{k'=1}^K \exp\{ \boldw_{k'}^{\trans}\boldx_n \} }\,.
+\end{align*}
+
+Here we're using~${t_{nk}=1}$ to indicate the probability that the $n$th entry
+is assigned to the $k$th class.\\
+
+Softmax is a crucial function in logistic regression, and you will see it again in other models, such as neural networks. 
+So, we want you to start gaining the intuitions for the properties of softmax, and for common methods that employ it. 
+
+Show that:
+\begin{enumerate}
+  \item The output of the softmax function is always a vector with non-negative components
+    that are at most 1. 
+  \item The output of the softmax function forms a distribution (the components sum to 1).
+  \item Softmax preserves order. This means that if the elements of $\mathbf{z}$ have some order, then the elements of $\bm{\sigma}(\mathbf{z})$ have the same order. 
+  \item Equation 4.106 from Bishop holds
+  \item Using your answer to the previous question, show that equation 4.109
+    holds. By the way, this may be useful for Problem 3!
+\end{enumerate}
+\end{problem}
+\subsection*{Solution}
+
+
+
+%\subsection*{2. Mooooar matrix calculus [10 pts]}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Problem 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{problem}[Mooooar matrix calculus , 10pts]
+\textbf{Note - this problem appears longer than it is, since we broke up one problem into separate parts rather
+than having you do all of these steps at once. Many of these subparts may be just one or two lines.}\\
+
+Consider a generative K-class model.  We define the class prior with vector
+$\vec \pi$: $\mathbb{P}(\mathcal{C}_k) = \pi_k$.  We define the
+class-conditional densities $\mathbb{P}(\phi|\mathcal{C}_k)$ where $\phi$ is the
+input feature vector. Consider the data set $\{\phi_n, {\bf t}_n\}$ where $n = 1 \dots N$ where ${\bf
+t}_n \in \{0,1\}^K$ is a one-hot encoded target vector. This means that
+$\bf{t}_n$ is 0 everywhere, except for in the $k$th position, where $k$ is the
+class assigned to the $n$th feature vector.
+\begin{enumerate}
+  \item Write out the complete-data log-likelihood of the data set using only the
+    notations introduced in the problem formulation above.
+    $$\ln \mathbb{P}(\{\phi_n, {\bf t}_n \} | \{\pi_k \}) =?$$
+  \item Since the prior forms a distribution, it has the constraint that
+    $\sum_k\pi_k - 1 = 0$.  Using the hint at the end of the exercise, give the
+    expression for the maximum-likelihood estimator for the prior
+    class-membership probabilities:
+    $$\hat \pi_k =?$$
+    Make sure to write out the intermediary equation you need
+    to solve to obtain this estimator. Double-check your answer: the final
+    result should be very intuitive!
+\end{enumerate}
+    We will suppose for the remaining questions of this exercise that the
+    class-conditional probabilities are given by gaussian distributions with the
+    same covariance matrix:
+    $$\mathbb{P}(\phi | C_k) = \mathcal{N}(\phi | \vec \mu_k, \Sigma)$$
+    \begin{enumerate}
+  \item[3.] Write out the gradient of log-likelihood with respect to vector $\mu_k$.
+    Write the expression in matrix form as a function of the variables defined
+    throughout this exercise. Simplify as much as possible for full credit.
+  \item[4.] Write out the maximum-likelihood estimator for vector $\mu_k$. Once
+    again, your final answer should seem intuitive.
+  \item[5.] Write out the gradient for the log-likelihood with respect to the
+    covariance matrix $\Sigma$. Even though the log-likelihood function is a
+    scalar function, since you are differentiating with respect to a
+    \emph{matrix}, the resulting expression should be a matrix!
+  \item[6.] Express the maximum likelihood estimator of the covariance matrix.
+\end{enumerate}
+
+\paragraph{Hint.} When maximizing a function $f$ with respect to an equality
+constraint that needs to be met at the optimum (which can always be written as
+$g(x) = 0$), we introduce a Lagrange multiplier $\lambda$ and maximize: $$\max_x
+f(x) + \lambda g(x)$$
+
+\paragraph{Cookbook formulas.} Here are some formulas you might want to consider
+using to compute difficult gradients. You can use them as is in the homework
+without proof. If you are looking to hone your matrix calculus skills, try to
+find different ways to prove these formulas yourself (will not be part of the
+evaluation of this homework). In general, you can use any formula from the matrix cookbook,
+as long as you cite it. We opt for the following common notation:
+$X^{-T} := (X^{-1})^{-T} = (X^{T})^{-1}$
+\begin{align*}
+  & \frac{\partial a^T X^{-1} b}{\partial X} = - X^{-T} a b^T X^{-T} \\
+  & \frac{\partial \ln | \det (X) |}{\partial X} = X^{-T}
+ \end{align*}
+ \end{problem}
+\subsection*{Solution}
+
+
+\newpage
+\subsection*{3. Classifying Fruit [15pts]}
+You're tasked with  classifying three different kinds of fruit, based on their
+heights and widths.  Figure~\ref{fig:fruit} is a plot of the data.  Iain Murray
+collected these data and you can read more about this on his website at
+\url{http://homepages.inf.ed.ac.uk/imurray2/teaching/oranges_and_lemons/}.  We
+have made a slightly simplified (collapsing the subcategories together) version
+of this available as \verb|fruit.csv|, which you will find in the Github repository.
+The file has three columns: type (1=apple, 2=orange, 3=lemon), width,
+and height.  The first few lines look like this:
+\begin{csv}
+fruit,width,height
+1,8.4,7.3
+1,8,6.8
+1,7.4,7.2
+1,7.1,7.8
+...
+\end{csv}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{fruit}
+\caption{Heights and widths of apples, oranges, and lemons.  These fruit were
+purchased and measured by Iain Murray:
+\url{http://homepages.inf.ed.ac.uk/imurray2/teaching/oranges_and_lemons/}.}
+\label{fig:fruit}
+\end{figure}
+\begin{problem}[Classifying Fruit, 15pts]
+Please implement the following:
+\begin{itemize}
+\item Implement the three-class generalization of logistic regression, also
+  known as softmax regression, for these data. You will do this by implementing
+  gradient descent on the log likelihood. 
+\item After this, implement a simple generative classifier with Gaussian
+  class-conditional densities, as in Bishop Section 4.2.2. In particular, make
+  two implementations of this, one with a shared covariance matrix across all of
+  the classes, and one with a separate covariance being learned for each class.
+  Note that the staff implementation can switch between these two by the
+  addition of just a few lines of code. The shared covariance matrix case is
+  detailed in Bishop (and you worked on it in Problem 2), and the separate covariance 
+  case is only slightly different. In the separate covariance matrix case, the MLE for the
+  covariance matrix of each class is simply the covariance of the data points assigned to that
+  class, without combining them as in the shared case.
+\end{itemize}
+You may use anything in  numpy or scipy, except for scipy.optimize. That being said, if you happen to find a function in numpy or scipy that seems like it is doing too much for you, run it by a staff member. In general, linear algebra and random variable functions are fine. The controller file is problem3.py, in which you will specify parameters. The actual implementations you will write will be in LogisticRegression.py and GaussianGenerativeModel.py.
+
+
+You will be given unimplemented class interfaces for GaussianGenerativeModel and LogisticRegression in the distribution code, 
+and the code will indicate certain lines that you should not change in your final submission. Naturally, don't change these.
+These classes will allow the final submissions to have consistency. There will also be a few hyperparameters that are set to
+irrelevant values at the moment. You may need to modify these to get your methods to work.
+The classes you implement follow the same pattern as scikit-learn, so they should be familiar to you. The distribution code currently outputs nonsense predictions just to show what the high-level interface should be, so you should completely remove the given predict() implementations and replace them with your implementations.
+
+\begin{itemize}
+\item The visualize() method for each classifier will save a plot that will show the decision boundaries. Please include those in this assignment.
+\item Which classifiers model the distributions well? 
+\item What explains the differences?
+\end{itemize}
+\end{problem}
+
+\subsection*{Solution}
+
+
+
+
+
+
+
+
+\newpage
+\subsection*{Calibration [1pt]}
+Approximately how long did this homework take you to complete?
+
+
+\end{document}
