@@ -1,13 +1,12 @@
 \documentclass[submit]{harvardml}
 
 % Put in your full name and email address.
-\name{Your Name}
-\email{email@fas.harvard.edu}
+\name{Weiyi Chen}
+\email{wec427@g.harvard.edu}
 
 % List any people you worked with.
 \collaborators{%
-  John Doe,
-  Fred Doe
+N.A.
 }
 
 % You don't need to change these.
@@ -113,7 +112,50 @@ Show that:
 \end{problem}
 \subsection*{Solution}
 
-
+\begin{enumerate}
+    \item The $k$-th component of the output vector of the softmax function is 
+    $$ \frac{\exp(z_k)}{\sum_i\exp(z_i)} > 0, \forall k $$
+    which is non-negative because $exp(x) > 0, \forall x \in \mathcal{R}$.
+    Since every component is non-negative, then
+    $$ \exp(z_k) \le \exp(z_k) + \sum_{i\neq k} \exp(z_i) \le \sum_{i} \exp(z_i) $$
+    therefore 
+    $$ \frac{\exp(z_k)}{\sum_i\exp(z_i)} \le 1, \forall k $$
+    The output of the softmax function is always a vector with non-negative components that are at most $1$.
+    \item The output of the softmax function forms a distribution because the components sum to $1$, 
+    $$ \sum_k \frac{\exp(z_k)}{\sum_i\exp(z_i)} = \frac{\sum_k\exp(z_k)}{\sum_i\exp(z_i)} = 1 $$
+    \item For any two elements of $\boldz$ with index $j$ and $k$, assume without loss of generality that $z_j \ge z_k$, then according to the property that the exponential is a monotonically increasing continuous function, then
+    $$ \exp(z_j) \ge \exp(z_k) $$
+    Therefore it does not change the order of any two elements, i.e. 
+    $$ \frac{\exp(z_j)}{\sum_i\exp(z_i)} \ge \frac{\exp(z_k)}{\sum_i\exp(z_i)}, \forall j, k \text{ such that } z_j \ge z_k $$
+    Softmax preserves order.
+    \item This is to show the derivatives of the softmax activation function (4.104), which is equivalent to the notation above, 
+    $$ p(\mathcal{C}_k \given \phi) = y_k(\phi) = \frac{\exp(a_k)}{\sum_j \exp(a_j)} $$
+    where the $a_k$ are defined by (4.105), 
+    $$ a_k = \boldw_k^T \phi $$
+    are given by (4.106),
+    $$ \frac{\partial y_k}{\partial a_j} = y_k(I_{kj} - y_j) $$
+    
+    If $j = k$, from (4.104) we have
+    $$ \frac{\partial y_k}{\partial a_k} = \frac{e^{a_k}}{\sum_i e^{a_i}} - \left(\frac{e^{a_k}}{\sum_i e^{a_i}} \right)^2 = y_k(1-y_k) $$
+    If $j \neq k$, from (4.104) we have
+    $$ \frac{\partial y_k}{\partial a_j} = -\frac{e^{a_k}e^{a_j}}{\left(\sum_i e^{a_i}\right)^2} = -y_ky_j $$
+    Combining these two we derive (4.106) for any $j, k$,
+    $$ \frac{\partial y_k}{\partial a_j} = y_k(I_{kj} - y_j) $$
+    \item We start by computing the derivative of (4.108) w.r.t. $y_{nk}$
+    $$ \frac{\partial E}{\partial y_{nk}} = -\sum_{k=1}^{K}\frac{t_{nk}}{y_{nk}} $$
+    From (4.106), we see that
+    $$ \frac{\partial y_{nk}}{\partial a_{nj}} = y_{nk}(I_{kj} - y_{nj}) $$
+    Finally, we have
+    $$ \nabla_{\boldw_j} a_{nj} = \phi_n $$
+    where $\nabla$ denotes the gradient with respect to w. Combining these three using the chain rule, we obtain
+    $$ \nabla_{\boldw_j} E = \sum_{n=1}^N \frac{\partial E}{\partial y_{nk}} \cdot \frac{\partial y_{nk}}{\partial a_{nj}} \cdot \nabla_{\boldw_j} a_{nj} = \sum_{n=1}^{N} \sum_{k=1}^K t_{nk}(y_{nj} - I_{kj}) \phi_n $$
+    Note that according to the answer of part 2, 
+    $$ \sum_{k=1}^K t_{nk}y_{nj} = y_{nj} $$  
+    and 
+    $$ \sum_{k=1}^K t_{nk}I_{kj} = t_{nj} $$ 
+    Therefore
+    $$ \nabla_{\boldw_j} E = \sum_{n=1}^{N} (y_{nj} - t_{nj}) \phi_n $$
+\end{enumerate}
 
 %\subsection*{2. Mooooar matrix calculus [10 pts]}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -177,7 +219,59 @@ $X^{-T} := (X^{-1})^{-T} = (X^{T})^{-1}$
   & \frac{\partial \ln | \det (X) |}{\partial X} = X^{-T}
  \end{align*}
  \end{problem}
+
+
 \subsection*{Solution}
+\begin{enumerate}
+    \item The probability of one data point is
+    $$ P(\phi, \boldt) = P(\phi \given \boldt) P(\boldt) = \prod_{k=1}^K (P(\phi \given C_k) \pi_k)^{\boldt_k} $$
+    I denote the parameters of this model as $\theta$. The independent samples allow us to take a product over the data points.
+    $$ \mathcal{L}(\theta) = \prod_{n=1}^{N}\prod_{k=1}^K (P(\phi_n \given C_k) \pi_k)^{t_{nk}} $$
+    Thus,
+    $$ l(\theta) = \sum_{n=1}^{N} \sum_{k=1}^K t_{nk} [\log(P(\phi_n \given C_k)) + \log\pi_k] $$
+    
+    \item We want to maximize the log likelihood subject to the constraint that $\sum_k\pi_k - 1 = 0$. Thus, we must introduce Lagrange Multipliers. The parameters we care about here are the $\pi_k$'s. Here is the Lagrangian:
+    $$ \mathcal(\pi, \lambda) = \sum_{n=1}^{N} \sum_{k=1}^K t_{nk} [\log(P(\phi_n \given C_k)) + \log\pi_k] + \lambda(\sum_{k=1}^K\pi_k - 1) $$
+    Taking the derivative with respect to $\pi_k$ and setting it to 0, we have
+    $$ \frac{\partial}{\partial \pi_k} \mathcal{L}(\pi, \lambda) = \frac{1}{\pi_k} \sum_{n=1}^N t_{nk} + \lambda = 0 \Rightarrow \pi_k = -\frac{1}{\lambda} \sum_{n=1}^N t_{nk} = -\frac{N_k}{\lambda} $$
+    where $N_k$ is the number of data points whose label is class $k$. Taking the derivative with respect to $\lambda$, we have
+    $$ \frac{\partial}{\partial \lambda} \mathcal{L}(\pi,\lambda) = \sum_{k=1}^K \pi_k - 1 = 0 \Rightarrow \sum_{k=1}^K \pi_k = 1 $$
+    We can plug in all of our values of the $\pi_k$'s into the constraint, giving us the value of $\lambda$:
+    $$ \sum_{k=1}^K \pi_k = \sum_{k=1}^K - \frac{N_k}{\lambda} = -\frac{N}{\lambda} = 1 \Rightarrow \lambda = -N $$
+    After having solved for $\lambda$, we can just plug this back into our other equations to solve for our $\pi_k$'s. Thus, we have that the maximum likelihood estimates of the prior probabilities are
+    $$ \pi_k = \frac{N_k}{N} $$
+    
+    \item The gradient of log-likelihood with respect to vector $\mu_k$ is 
+    $$ \frac{\partial l(\theta)}{\partial \mu_k} = \sum_{n=1}^{N} t_{nk} \frac{\partial \log(P(\phi_n \given C_k))}{\partial \mu_k} $$
+    Since we are given $\mathbb{P}(\phi | C_k) = \mathcal{N}(\phi | \vec \mu_k, \Sigma)$, recall that
+    $$ \mathcal{N}(\phi \given \mu_k, \Sigma) = \frac{1}{\sqrt{(2\pi)^k|\Sigma|}}  \exp\left(-\frac{1}{2} (\phi - \mu_k)^{\rm T} \Sigma^{-1} (\phi-\mu_k)\right) $$
+    Then 
+    $$ \frac{\partial P(\phi_n \given C_k)}{\partial \mu_k} = -\frac{1}{2} \left( \frac{\partial(\phi_n - \mu_k)^T\Sigma^T(\phi_n - \mu_k)}{\partial\mu_k} \right) = -\frac{1}{2} (-2\Sigma^T(\phi_n-\mu_k)) = \Sigma^T(\phi_n-\mu_k) $$ 
+    Plug in the first formula, we have
+    $$ \frac{\partial l(\theta)}{\partial \mu_k} = \sum_{n=1}^N t_{nk} \Sigma^T(\phi_n-\mu_k) = - N_k\Sigma^T\mu_k + \sum_{n=1}^N t_{nk}\Sigma^T\phi_n  $$
+    where we used the notation that $ N_k = \sum_{n=1}^N t_{nk} $.
+    
+    \item Let the gradient of last part be zero, we have
+    $$ - N_k\Sigma^T\mu_k + \sum_{n=1}^N t_{nk}\Sigma^T\phi_n = 0 \Rightarrow \mu_k = \frac{1}{N_k} \sum_{n=1}^N t_{nk}\phi_n $$
+    
+    \item The gradient of log-likelihood with respect to vector $\mu_k$ is 
+    $$ \frac{\partial l(\theta)}{\partial \Sigma} = \sum_{n=1}^{N} \sum_{k=1}^K t_{nk} \frac{\partial \log(P(\phi_n \given C_k))}{\partial \Sigma} $$
+    then 
+    $$ \frac{\partial P(\phi_n \given C_k)}{\partial \Sigma} = -\frac{1}{2} (\frac{\partial\ln|\det(\Sigma)|}{\partial\Sigma} + \frac{\partial(\phi_n - \mu_k)^T\Sigma^T(\phi_n - \mu_k)}{\partial\Sigma}) = -\frac{1}{2} (\Sigma^{-1} - \Sigma^{-1}(\phi_n - \mu_k)(\phi_n - \mu_k)^T\Sigma^{-1}) $$
+    Plug in the first formula, we have
+    $$ \frac{\partial l(\theta)}{\partial \Sigma} = -\sum_{n=1}^{N} \sum_{k=1}^K \frac{t_{nk}}{2} (\Sigma^{-1} - \Sigma^{-1}(\phi_n - \mu_k)(\phi_n - \mu_k)^T\Sigma^{-1}) $$ 
+    Using the fact that $ N_k = \sum_{n=1}^N t_{nk} $ and $\sum_k N_k = N$, we have
+    $$ \frac{\partial l(\theta)}{\partial \Sigma} = -\frac{N}{2}\Sigma^{-1} + \sum_{n=1}^{N} \sum_{k=1}^K \frac{t_{nk}}{2}\Sigma^{-1}(\phi_n - \mu_k)(\phi_n - \mu_k)^T\Sigma^{-1} $$ 
+    
+    \item Let the gradient of last part be zero, we have
+    $$ -\frac{N}{2}\Sigma^{-1} + \sum_{n=1}^{N} \sum_{k=1}^K \frac{t_{nk}}{2}\Sigma^{-1}(\phi_n - \mu_k)(\phi_n - \mu_k)^T\Sigma^{-1} = 0 $$
+    then 
+    $$ \Sigma = \frac{1}{N} \sum_{k=1}^K \sum_{n=1}^N t_{nk} (\phi_n - \mu_k)(\phi_n - \mu_k)^T $$
+    if we assume 
+    $$ \boldS_k = \frac{1}{N_k} \sum_{n=1}^N t_{nk} (\phi_n - \mu_k)(\phi_n - \mu_k)^T $$
+    then
+    $$ \Sigma = \sum_{k=1}^K \frac{N_k}{N} \boldS_k $$
+\end{enumerate}
 
 
 \newpage
@@ -241,16 +335,48 @@ The classes you implement follow the same pattern as scikit-learn, so they shoul
 
 \subsection*{Solution}
 
+The three-class generalization of logistic regression and Gaussian generative classifiers with either shared or separate covariance are implemented in LogisticRegression.py and GaussianGenerativeModel.py respectively.
 
+Below are the three plots
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=400pt]{logistic_regression_result}
+    \caption{Logistic Regression result}
+\end{figure}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=400pt]{generative_result_separate_covariances}
+    \caption{Generative result - separate covariances}
+\end{figure}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=400pt]{generative_result_shared_covariances}
+    \caption{Generative result - shared covariances}
+\end{figure}
 
+\begin{itemize}
+\item Which classifiers model the distributions well? 
+\item What explains the differences?
+\end{itemize}
 
+It's hard to say which classifier is better, each one has its own benefits and shortcomings. Roughly speaking, I think Gaussian generative is better than Logistic regression.
+
+In Logistic regression, it distinguishes green and others very well, however it's unable to separate red and blue, therefore all blue points are predicted incorrectly as red.
+
+In Generative result - separate covariances, it distinguishes green from others very well (but not as perfect as logistic), also it predicts most of the blue points correctly though there are 3 blue points are recognized in red area. The shortcoming is that it's unable to predict most of the red points correctly since most of them are in blue area, but I believe this is good enough for linear barrier since there's a mixture between blue and red there.
+
+In Generative result - shared covariances, the analysis on this image is similar to the separate one. It distinguishes green from others very well, and predicts most of the blue points correctly though there are 3 blue points are recognized in red area. The shortcoming is that it's unable to predict most of the red points correctly since most of them are in blue area. The difference of this one compared to the separate one is the margin of those incorrect-predicted red points, the margin of incorrect-predicted red points are larger while the margin of incorrect-predicted blue points are smaller in this plot.
+
+All these three explain difference between green and the others, but only Gaussian Generative, either separate or shared, partially explains the difference between blue and red.
 
 \newpage
 \subsection*{Calibration [1pt]}
 Approximately how long did this homework take you to complete?
 
+\subsection*{Solution}
+It took me almost 12 hours to complete.
 
 \end{document}
