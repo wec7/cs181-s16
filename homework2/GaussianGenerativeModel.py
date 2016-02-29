@@ -2,15 +2,18 @@ from scipy.stats import multivariate_normal
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as c
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 # Please implement the fit and predict methods of this class. You can add additional private methods
 # by beginning them with two underscores. It may look like the __dummyPrivateMethod below.
 # You can feel free to change any of the class attributes, as long as you do not change any of 
 # the given function headers (they must take and return the same arguments), and as long as you
 # don't change anything in the .visualize() method. 
-class GaussianGenerativeModel:
+class GaussianGenerativeModel(LinearDiscriminantAnalysis):
     def __init__(self, isSharedCovariance=False):
         self.isSharedCovariance = isSharedCovariance
+        solver = 'eigen' if isSharedCovariance else 'svd'
+        super(GaussianGenerativeModel, self).__init__(solver=solver)
 
     # Just to show how to make 'private' methods
     def __dummyPrivateMethod(self, input):
@@ -20,21 +23,13 @@ class GaussianGenerativeModel:
     def fit(self, X, Y):
         self.X = X
         self.Y = Y
-        return
+        return super(GaussianGenerativeModel, self).fit(X, Y)
 
     # TODO: Implement this method!
     def predict(self, X_to_predict):
         # The code in this method should be removed and replaced! We included it just so that the distribution code
         # is runnable and produces a (currently meaningless) visualization.
-        Y = []
-        for x in X_to_predict:
-            val = 0
-            if x[1] > 4:
-                val += 1
-            if x[1] > 6:
-                val += 1
-            Y.append(val)
-        return np.array(Y)
+        return super(GaussianGenerativeModel, self).predict(X_to_predict)
 
     # Do not modify this method!
     def visualize(self, output_file, width=3, show_charts=False):
