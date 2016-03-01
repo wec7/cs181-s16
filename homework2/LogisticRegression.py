@@ -53,9 +53,9 @@ class LogisticRegression(BaseLogisticRegression):
         while True:
             epoch += 1
             gradient = self.__iteration()
-            if epoch % 10000 == 0:
+            if epoch % 1e6 == 0:
                 norm = np.linalg.norm(gradient)
-                if norm < .000001:
+                if norm < 1e-6:
                     break
         # return super(LogisticRegression, self).fit(X, Y)
 
