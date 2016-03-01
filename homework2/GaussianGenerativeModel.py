@@ -12,24 +12,60 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 class GaussianGenerativeModel(LinearDiscriminantAnalysis):
     def __init__(self, isSharedCovariance=False):
         self.isSharedCovariance = isSharedCovariance
-        solver = 'eigen' if isSharedCovariance else 'svd'
-        super(GaussianGenerativeModel, self).__init__(solver=solver)
+        super(GaussianGenerativeModel, self).__init__()
 
     # Just to show how to make 'private' methods
-    def __dummyPrivateMethod(self, input):
-        return None
+    def __meanCovMatrix(self):
+        means = []
+        cov = []
+        shared_cov = np.zeros((self.nFeatures, self.nFeatures))
+        for c in range(self.nClasses):
+            rows_in_class = self.X[self.Y == c]
+            means.append(np.mean(rows_in_class, axis=0))
+            if self.isSharedCovariance:
+                Cov_i = np.cov(rows_in_class.T)
+                shared_cov += Cov_i*rows_in_class.shape[0]
+            else:
+                cov.append(np.cov(rows_in_class.T))
+        if self.isSharedCovariance:
+            return np.array(means), shared_cov/self.X.shape[0]
+        return np.array(means), cov
+
+    def __numClasses(self):
+        rets = np.zeros(self.nClasses)
+        for y in self.Y:
+            rets[y] += 1
+        return rets
 
     # TODO: Implement this method!
     def fit(self, X, Y):
         self.X = X
         self.Y = Y
-        return super(GaussianGenerativeModel, self).fit(X, Y)
+        self.nClasses = 3
+        self.nFeatures = X.shape[1]
+        self.N = X.shape[0]
+
+        self.class_means, self.shared_covariance = self.__meanCovMatrix()
+        class_counts = self.__numClasses()
+        self.b = np.log(class_counts / (class_counts.sum()))
+        # return super(GaussianGenerativeModel, self).fit(X, Y)
+
+    def __gaussianProb(self, x):
+        class_probs = np.zeros(self.nClasses)
+        for c in range(self.nClasses):
+            cov = self.shared_covariance if self.isSharedCovariance else self.shared_covariance[c]
+            class_probs[c] = multivariate_normal.pdf(x, mean=self.class_means[c], cov=cov)
+        return np.log(class_probs)
 
     # TODO: Implement this method!
     def predict(self, X_to_predict):
         # The code in this method should be removed and replaced! We included it just so that the distribution code
         # is runnable and produces a (currently meaningless) visualization.
-        return super(GaussianGenerativeModel, self).predict(X_to_predict)
+        gaussian_probs = np.zeros((X_to_predict.shape[0], self.nClasses))
+        for i in range(X_to_predict.shape[0]):
+            gaussian_probs[i] = self.__gaussianProb(X_to_predict[i])
+        return np.argmax(gaussian_probs + self.b, axis=1)
+        # return super(GaussianGenerativeModel, self).predict(X_to_predict)
 
     # Do not modify this method!
     def visualize(self, output_file, width=3, show_charts=False):

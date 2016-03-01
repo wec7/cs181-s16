@@ -16,39 +16,56 @@ class LogisticRegression(BaseLogisticRegression):
         super(LogisticRegression, self).__init__()
     
     # Just to show how to make 'private' methods
-    def __oneHotEncoding(self, C):
-        ret = []
-        for c in C:
-            if c == 0:
-                ret.append([1, 0, 0])
-            elif c == 1:
-                ret.append([0, 1, 0])
-            else:
-                ret.append([0, 0 ,1])
-        return np.array(ret)
+    def __oneHotEncoding(self, Y):
+        rets = []
+        for y in Y:
+            ret = np.zeros(3)
+            ret[y] = 1
+            rets.append(ret)
+        return np.array(rets)
 
-    def __oneHotDecoding(self, C):
-        ret = []
-        for c in C:
-            if c == [1, 0, 0]:
-                ret.append(0)
-            elif c == [0, 1, 0]:
-                ret.append(1)
-            else:
-                ret.append(2)
-        return np.array(ret)
+    def __softmax(self, X, W):
+        activations = X.dot(W.T)
+        return activations - logsumexp(activations, axis=1)[:, np.newaxis]
+
+    def __loss(self):
+        return -np.sum(self.Y * self.__softmax(self.X, self.W)) + self.lambda_parameter * (np.power(self.W, 2).sum())
+
+    def __gradientLoss(self):
+        return (np.exp(self.__softmax(self.X, self.W)) - self.Y).T.dot(self.X) + 2 * self.lambda_parameter * self.W
+
+    def __iteration(self):
+        gradientLoss = self.__gradientLoss()
+        self.W = self.W - gradientLoss * self.eta
+        return gradientLoss
 
     # TODO: Implement this method!
-    def fit(self, X, C):
+    def fit(self, X, Y):
+        X = np.append(X, np.ones((X.shape[0], 1)), axis=1)
+        self.nFeatures = X.shape[1]
         self.X = X
-        self.Class = C
-        return super(LogisticRegression, self).fit(X, C)
+        self.Class = Y
+        self.Y = self.__oneHotEncoding(Y)
+        self.N = X.shape[0]
+        self.W = np.zeros((3, self.nFeatures))
+
+        epoch = 0
+        while True:
+            epoch += 1
+            gradient = self.__iteration()
+            if epoch % 10000 == 0:
+                norm = np.linalg.norm(gradient)
+                if norm < .000001:
+                    break
+        # return super(LogisticRegression, self).fit(X, Y)
 
     # TODO: Implement this method!
     def predict(self, X_to_predict):
         # The code in this method should be removed and replaced! We included it just so that the distribution code
         # is runnable and produces a (currently meaningless) visualization.
-        return super(LogisticRegression, self).predict(X_to_predict)
+        X_to_predict = np.append(X_to_predict, np.ones((X_to_predict.shape[0], 1)), axis=1)
+        return np.argmax(X_to_predict.dot(self.W.T), axis=1)
+        # return super(LogisticRegression, self).predict(X_to_predict)
 
     def visualize(self, output_file, width=2, show_charts=False):
         X = self.X
