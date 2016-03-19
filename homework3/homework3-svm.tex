@@ -61,8 +61,8 @@ Consider a dataset with the following 6 points in $1D$: \[\{(x_1, y_1)\} =\{(-3
 mapping these points to $2$ dimensions using the feature vector $\phi : x
 \mapsto (x, x^2)$. The max-margin classifier objective is given by:
 \begin{equation}
-  \min_{\mathbf{w}, w_0} \|w\|_2^2 \quad \text{s.t.} \quad y_i(w^T\phi(x_i) + w_0)
-  \geq 1,~\forall i
+  \min_{\mathbf{w}, w_0} \|w\|_2^2 \quad \text{s.t.} \quad
+  y_i(\mathbf{w}^T\phi(x_i) + w_0) \geq 1,~\forall i
 \end{equation}
 
 Note: the purpose of this exercise is to solve the SVM without the help of a
@@ -72,11 +72,11 @@ providing a part of the solution. Make sure to follow the logical structure of
 the exercise when composing your answer and to justify each step.
 
 \begin{enumerate}
-  \item Write down a vector that is parallel to the optimal vector $w$. Justify
-    your answer.
-  \item What is the value of the margin achieved by $w$? Justify your
+  \item Write down a vector that is parallel to the optimal vector $\mathbf{w}$.
+    Justify your answer.
+  \item What is the value of the margin achieved by $\mathbf{w}$? Justify your
     answer.
-  \item Solve for $w$ using your answers to the two previous questions.
+  \item Solve for $\mathbf{w}$ using your answers to the two previous questions.
   \item Solve for $w_0$. Justify your answer.
   \item Write down the discriminant as an explicit function of $x$.
 \end{enumerate}
