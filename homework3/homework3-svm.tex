@@ -47,27 +47,36 @@
 {\Large Homework 3: SVM}\\
 \end{center}
 
-There is a mathematical component and a programming
-component to this homework. Please submit ONLY your PDF to Canvas, and push all of your work to your Github repository. If a question requires you to make any plots, like Problem 3, please include those in the writeup.
+There is a mathematical component and a programming component to this homework.
+Please submit ONLY your PDF to Canvas, and push all of your work to your Github
+repository. If a question asks you to make any plots, like Problem 3, please
+include those in the writeup.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 1
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{problem}[Fitting an SVM by hand, 8pts]
-Consider a dataset with the following 6 points in $1D$: \[\{(x_1, y_1)\} =\{(-3 , +1 ), (-2 , +1 ) , (-1,  -1 ), ( 1 , -1 ), ( 2 , +1 ), ( 3 , +1 )\}\] Consider mapping these points to $2$ dimensions using the
-feature vector $\phi : x \mapsto (x, x^2)$. The max-margin
-classifier objective is given by:
+Consider a dataset with the following 6 points in $1D$: \[\{(x_1, y_1)\} =\{(-3
+, +1 ), (-2 , +1 ) , (-1,  -1 ), ( 1 , -1 ), ( 2 , +1 ), ( 3 , +1 )\}\] Consider
+mapping these points to $2$ dimensions using the feature vector $\phi : x
+\mapsto (x, x^2)$. The max-margin classifier objective is given by:
 \begin{equation}
-  \min_{\mathbf{w}, w_0} \|w\|_2^2 \quad \text{s.t.} \quad y_i(w^T x_i + w_0)
-  \geq 1,~\forall i
+  \min_{\mathbf{w}, w_0} \|\mathbf{w}\|_2^2 \quad \text{s.t.} \quad y_i(\mathbf{w}^T \phi(x_i) +
+  w_0) \geq 1,~\forall i
 \end{equation}
 
+Note: the purpose of this exercise is to solve the SVM without the help of a
+computer, relying instead on principled rules and properties of these
+classifiers. The exercise has been broken down into a series of questions, each
+providing a part of the solution. Make sure to follow the logical structure of
+the exercise when composing your answer and to justify each step.
+
 \begin{enumerate}
-  \item Write down a vector that is parallel to the optimal vector $w$. Justify
+  \item Write down a vector that is parallel to the optimal vector $\mathbf{w}$. Justify
     your answer.
   \item What is the value of the margin achieved by $\mathbf{w}$? Justify your
     answer.
-  \item Solve for $w$ using your answers to the two previous questions.
+  \item Solve for $\mathbf{w}$ using your answers to the two previous questions.
   \item Solve for $w_0$. Justify your answer.
   \item Write down the discriminant as an explicit function of $x$.
 \end{enumerate}
@@ -94,7 +103,7 @@ then the following are also valid kernels:
 	K(\boldx, \boldx') &= c\,K_1(\boldx, \boldx') \quad \text{for $c>0$}\\
 	K(\boldx, \boldx') &= K_1(\boldx, \boldx') + K_2(\boldx, \boldx')\\
 	K(\boldx, \boldx') &= K_1(\boldx, \boldx')\,K_2(\boldx, \boldx')\\
-	K(\boldx, \boldx') &= \exp\{ K_1(\boldx, \boldx') \}\\t
+	K(\boldx, \boldx') &= \exp\{ K_1(\boldx, \boldx') \}\\
   K(\boldx, \boldx') &= f(\boldx)\,K_1(\boldx, \boldx')\,f(\boldx') \quad
   \text{where $f$ is any function from~$\reals^D$ to $\reals$}
 \end{align*}
@@ -107,8 +116,36 @@ then the following are also valid kernels:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 3
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{problem}[Scaling up your SVM solver, 10pts]
-We will release Problem 3 shortly!
+\begin{problem}[Scaling up your SVM solver, 10pts (+7pts with extra credit)]
+
+
+
+In the previous homework, you studied a simple data set of fruit measurements.
+We would like you to code up a few simple SVM solvers to classify lemons from
+apples. To do this, read the paper at
+\url{http://www.jmlr.org/papers/volume6/bordes05a/bordes05a.pdf} and implement
+the Kernel Perceptron algorithm and the Budget Kernel Perceptron algorithm. The provided code has a base Perceptron class, which you will inherit to write KernelPerceptron and BudgetKernelPerceptron. This has been set up for you in problem3.py. The provided data is linearly separable, and you can see it in data.png. Make the optimization as fast as
+possible. 
+
+Additionally, we would like you to do some experimentation with the hyperparameters for each of these models. Try seeing if you can identify some patterns by changing $\beta$, N (maximum number of support vectors), or the number of random samples you take.  Note the training time, accuracy,  shapes/orientations of hyperplanes, and number of support vectors for various setups. We are intentionally leaving this open-ended to allow for experimentation, and so we will be looking for your thought process and not a rigid graph this time. That being said, any visualizations that you want us to grade and refer to in your descriptions should be included in this writeup. You can use the trivial $K(x_1, x_2) = x_1^Tx_2$ kernel for this problem, though you are welcome to experiment with more interesting kernels too. Also, answer the following reading questions in one or two sentences each.
+
+\begin{enumerate}
+\item In one short sentence, state the main purpose of the paper?
+\item Identify each of the parameters in Eq. 1
+\item State one guarantee for the Kernel perceptron algorithm described in the
+  paper.
+\item What is the main way the budget kernel perceptron algorithm tries to
+  improve on the perceptron algorithm.
+\item In simple words, what is the theoretical guarantee of LASVM algorithm? How
+  does it compare to its practical performance?
+\end{enumerate}
+
+
+For extra credit (+7 pts), implement the SMO algorithm and implement the LASVM process and do the same as above.
+
+
+
+
 \end{problem}
 
 \subsection*{Solution}
