@@ -47,8 +47,8 @@ budget_kernel_file_name = 'bk.png'
 # Don't change things below this in your final version. Note that you can use the parameters above to generate multiple graphs if you want to include them in your writeup.
 k = KernelPerceptron(numsamples)
 k.fit(X,Y)
-k.visualize(kernel_file_name, width=0, show_charts=True, save_fig=True, include_points=True)
+k.visualize(kernel_file_name, width=0, show_charts=True, save_fig=True, include_points=False)
 
 bk = BudgetKernelPerceptron(beta, N, numsamples)
 bk.fit(X, Y)
-bk.visualize(budget_kernel_file_name, width=0, show_charts=True, save_fig=True, include_points=True)
+bk.visualize(budget_kernel_file_name, width=0, show_charts=True, save_fig=True, include_points=False)

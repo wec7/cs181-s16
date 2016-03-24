@@ -29,8 +29,8 @@ class Perceptron(object):
 		# Create a grid of points
 		x_min, x_max = min(X[:, 0] - width), max(X[:, 0] + width)
 		y_min, y_max = min(X[:, 1] - width), max(X[:, 1] + width)
-		xx,yy = np.meshgrid(np.arange(x_min, x_max, .05), np.arange(y_min,
-		    y_max, .05))
+		xx,yy = np.meshgrid(np.arange(x_min, x_max, .005), np.arange(y_min,
+		    y_max, .005))
 
 		# Flatten the grid so the values match spec for self.predict
 		xx_flat = xx.flatten()
