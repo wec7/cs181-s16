@@ -1,0 +1,81 @@
+\chapter{Methods}
+
+\section{Data}
+
+We use the data provided by Kaggle, originally from The Harvard Clean Energy Project, an initiative at Harvard University to identify organic molecules with promising photovoltaic properties. The entire data set features over 2 million molecules with energetic properties calculated through crowd-sourced quantum computations. These molecules are given in string representation called the Simplified Molecular-Input Line-Entry System (SMILES). This is one of the industry standards for molecular representation. The response variable we attempt to predict is the difference in energy between the highest occupied molecular orbital (HOMO) and lowest unoccupied molecular orbital (LUMO). This HOMO-LUMO gap energy can be used as a proxy for the photovoltaic efficiency of a molecule.
+
+\section{Representations}
+
+Working with molecular SMILES directly is difficult since regression is usually tailored to a vector of predictor variables, rather than strings. We consider using Morgan fingerprints representation, a 2048-bit vector which is more amenable to machine learning methods.
+
+As described in section 2.2, Sun \cite{sun2014learning} uses a fingerprinting method that accounts for substructures in molecules. Here we use a similar path-based fingerprint implemented in RDKit \cite{landrum2006rdkit}. This method finds all atomic chains up to length 7 in a molecule, accounting for bond type, order, and cycles. Each canonical fragment is hashed to set 2048 bit vector. Thus a molecular fingerprint indicates the presence or absence of substructures within a molecule. In addition to fixed-size fragments, user-specified substructures can be used, allowing for input of prior knowledge. Such fingerprinting methods have been widely used for comparing molecules in medicinal chemistry.
+
+\section{Models}
+
+Though obviously given the inherently nonlinear interactions governing molecular systems, we still use both linear regressors and non-linear regressors as the regression methods. At Sun's \cite{sun2014learning} thesis, a Gaussian process acted as a nonlinear interpolater to data, modeling some smooth underlying function \cite{bartok2010gaussian}. Here we will explore more different class of learning algorithms. In this section, we will give a brief mathematical overview.
+
+\subsection{Ridge regression}
+
+Ridge regression addresses some of the problems of Ordinary Least Squares by imposing a penalty on the size of coefficients. The ridge coefficients minimize a penalized residual sum of squares,
+$$ \underset{w}{min\,} {{|| X w - y||_2}^2 + \alpha {||w||_2}^2} $$
+Here, $\alpha \geq 0$ is a complexity parameter that controls the amount of shrinkage: the larger the value of $\alpha$, the greater the amount of shrinkage and thus the coefficients become more robust to collinearity. \cite{rifkin2007notes}
+
+\subsection{Lasso regression}
+
+The Lasso is a linear model that estimates sparse coefficients. It is useful in some contexts due to its tendency to prefer solutions with fewer parameter values, effectively reducing the number of variables upon which the given solution is dependent. For this reason, the Lasso and its variants are fundamental to the field of compressed sensing. Under certain conditions, it can recover the exact set of non-zero weights.
+
+Mathematically, it consists of a linear model trained with $\ell_1$ prior as regularizer. The objective function to minimize is:
+$$\underset{w}{min\,} { \frac{1}{2n_{samples}} ||X w - y||_2 ^ 2 + \alpha ||w||_1}$$
+The lasso estimate thus solves the minimization of the least-squares penalty with $\alpha ||w||_1$ added, where $\alpha$ is a constant and $||w||_1$ is the $\ell_1$-norm of the parameter vector. \cite{guyon2003introduction}
+
+\subsection{Elastic net}
+
+ElasticNet is a linear regression model trained with L1 and L2 prior as regularizer. This combination allows for learning a sparse model where few of the weights are non-zero like Lasso, while still maintaining the regularization properties of Ridge. We control the convex combination of L1 and L2 using the $l1_{ratio}$ parameter.
+
+Elastic-net is useful when there are multiple features which are correlated with one another. Lasso is likely to pick one of these at random, while elastic-net is likely to pick both.
+
+A practical advantage of trading-off between Lasso and Ridge is it allows Elastic-Net to inherit some of Ridge’s stability under rotation.
+
+The objective function to minimize is in this case
+
+$$ \underset{w}{min\,} { \frac{1}{2n_{samples}} ||X w - y||_2 ^ 2 + \alpha \rho ||w||_1 +
+\frac{\alpha(1-\rho)}{2} ||w||_2 ^ 2} $$
+
+from Zou's introduction \cite{zou2005regularization}.
+
+\subsection{Neural Network}
+
+This jumps out the range of generalized linear regression. The most frequently used algorithm in neural network is Multi-layer Perception (MLP).
+
+MLP is a supervised learning algorithm that learns a function $f(\cdot): R^m \rightarrow R^o$ by training on a dataset, where $m$ is the number of dimensions for input and $o$ is the the number of dimensions for output. Given a set of features $X = {x_1, x_2, ..., x_m}$ and a target $y$, it can learn a non-linear function approximator for either classification or regression. It is different from logistic regression, in that between the input and the output layer, there can be one or more non-linear layers, called hidden layers.
+
+The input layer consists of a set of neurons $\{x_i | x_1, x_2, ..., x_m\}$ representing the input features. Each neuron in the hidden layer transforms the values from the previous layer with a weighted linear summation$ w_1x_1 + w_2x_2 + ... + w_mx_m$, followed by a non-linear activation function $g(\cdot):R \rightarrow R$ - like the hyperbolic tan function. The output layer receives the values from the last hidden layer and transforms them into output values. \cite{rumelhart1988learning}
+
+\subsection{Ensemble Methods}
+
+The goal of ensemble methods is to combine the predictions of several base estimators built with a given learning algorithm in order to improve generalizability / robustness over a single estimator. We use random forest as a representation of this class of methods.
+
+In random forests, each tree in the ensemble is built from a sample drawn with replacement (i.e., a bootstrap sample) from the training set. In addition, when splitting a node during the construction of the tree, the split that is chosen is no longer the best split among all features. Instead, the split that is picked is the best split among a random subset of the features. As a result of this randomness, the bias of the forest usually slightly increases (with respect to the bias of a single non-random tree) but, due to averaging, its variance also decreases, usually more than compensating for the increase in bias, hence yielding an overall better model. \cite{breiman2001random}
+
+\subsection{Support Vector Regression}
+
+a support vector machine constructs a hyperplane or set of hyperplanes in a high- or infinite-dimensional space, which can be used for regression. Intuitively, a good separation is achieved by the hyperplane that has the largest distance to the nearest training-data point of any class (so-called functional margin), since in general the larger the margin the lower the generalization error of the classifier \cite{suykens1999least}.
+
+In simpliest case of SVM, we are given a training dataset of n points of the form
+$$(\vec{x}_1, y_1),\, \ldots ,\, (\vec{x}_n, y_n)$$
+where the $y_i$ are either $1$ or $−1$, each indicating the class to which the point $\vec{x}_i$  belongs. Each  $\vec{x}_i$  is a p-dimensional real vector. We want to find the "maximum-margin hyperplane" that divides the group of points $\vec{x}_i$ for which $y_i=1$ from the group of points for which $y_i=-1$, which is defined so that the distance between the hyperplane and the nearest point $\vec{x}_i$ from either group is maximized.
+
+Any hyperplane can be written as the set of points $\vec{x}$ satisfying
+$$\vec{w}\cdot\vec{x} - b=0$$.
+
+\section{Experimental process}
+
+There are three levels in our experiment.
+
+At the lowest level, we use a subset of one million molecules with 256-bit vector from the Clean Energy Project data set for training, pick randomly into 10,000 for training and 8000 for testing. 
+
+At the second level, we use the whole one million data set of provided 256-bit vector data to train the regressor, predict the given 800,000 test data, and submit to see our scores.
+
+At the final level, once we confirm the method is one of the best algorithms for prediction with lowest error, we generated 2048-bit Morgan fingerprints for both one million training data and 800,000 testing data, using them to train and predict respectively, and finally submit as our formal submission. 
+
+The reason of this is that the higher the level, the more time-consuming of the program run, so we try avoid wasting at the higher level by observing the score difference at lower levels.

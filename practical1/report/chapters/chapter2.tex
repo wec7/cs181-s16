@@ -1,0 +1,21 @@
+\chapter{Related Work}
+
+\section{Neural network predictions}
+
+In 2012, Montavon et al. \cite{montavon2012learning} have shown Coulomb matrices to be a useful representation for energetic predictions using neural networks. In particular, they propose the idea of random sampling of Coulomb matrices over the possible permutations of atomic indexing. Their best neural network predicted atomization energies significantly better than various kernel methods, but neural networks are diffcult and time-consuming to train. Furthermore, they show that kernel methods are less affected by the specific representation of the Coulomb matrix.
+
+\section{Representations}
+
+In 2014, Sun \cite{sun2014learning} has examined representations and kernels for machine learning over molecules. He considered cheminformatic feature vectors, graph based matrix representations, and molecular fingerprints. He presented the test accuracy of the representations and kernels used as well as a mean predictor reference. Despite the richness of the Coulomb matrix representation, it performs poorly on this subset of data. Molecular fingerprinting results in the smallest error.
+
+Along with representations, Sun \cite{sun2014learning} also considered a simple RBF kernel, a random walk graph kernel, and a fingerprint similarity index. On a subset of CEP data, molecular fingerprinting predicted HOMO-LUMO gaps with the lowest error.
+
+Our project is extended from Sun's, and explore class of machine learning algorithms based on his accomplishment.
+
+\section{Fingerprinting and Molecular Similarity}
+
+The RDKit suggested by TF has a variety of built-in functionality for generating molecular fingerprints and using them to calculate molecular similarity. Morgan fingerprints, as one family of fingerprints, better known as circular fingerprints \cite{rogers2010extended}, is built by applying the Morgan algorithm to a set of user-supplied atom invariants. 
+
+Information is available about the atoms that contribute to particular bits in the Morgan fingerprint via the bitInfo argument. In RDKit, the dictionary provided is populated with one entry per bit set in the fingerprint, the keys are the bit ids, the values are lists of (atom index, radius) tuples.
+
+We borrow the conclusion of Sun's to use molecular fingerprinting, to predict HOMO-LUMO gaps, and will use Mogan fingerprinting 2048-bit vector data as our starting feature. But considering the huge data would be time-consuming, we will use 256-bit vector data given during experiment process. 

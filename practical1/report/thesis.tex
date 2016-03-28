@@ -1,0 +1,38 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass{harvard-thesis}
+
+\begin{document}
+
+% the front matter
+\input{frontmatter/coverpage}
+\title{Learning over Molecules: Models}
+\author{Jian Li, Ethan Cowan, Weiyi Chen}
+\advisor{Finale Doshi-Velez}
+\degreemonth{Feburary}
+\degreeyear{2016}
+\maketitle
+\abstractpage
+\tableofcontents
+
+\onehalfspacing
+
+% include each chapter...
+
+\input{chapters/chapter1}
+\input{chapters/chapter2}
+\input{chapters/chapter3}
+\input{chapters/chapter4}
+\input{chapters/chapter5}
+
+\singlespacing
+
+% the back matter
+\clearpage
+\bibliography{references}
+\addcontentsline{toc}{chapter}{References}
+\bibliographystyle{plainnat}
+\include{endmatter/colophon}
+
+\end{document}

@@ -1,0 +1,59 @@
+\chapter{Results}
+
+Firstly, we present the test accuracy of the second level experiment, including data and methods used as well as the linear regression sample as a reference. Linear methods performs poorly on this kind of data. Ensemble methods (random forest and gradient boosting) and decision trees (decision tree and extra tree) result in the smallest error, while linear regression methods are the worst.
+
+\begin{center}
+    \begin{tabular}{| l | l ||}
+    \hline
+    \textbf{Method} & \textbf{Score (error)} \\ \hline
+    Linear regression (sample) & 0.29846 \\ \hline
+    Lasso regression & 0.40682 \\ \hline
+    Adaboost regression & 0.32119 \\ \hline
+    Random forest (sample) & 0.27207 \\ \hline
+    Random forest (only log2 features selected) & 0.27208 \\ \hline
+    Random forest (only sqrt2 features selected) & 0.27208 \\ \hline
+    Gradient Boosting & 0.28592 \\ \hline
+    Decision Tree & 0.27206 \\ \hline
+    Extra Tree & 0.27206 \\ \hline
+    SVM (only trained with 100,000 data randomly picked) &  0.28823 \\ \hline
+    SVM (only trained with 10,000 data randomly picked) & 0.29691 \\ \hline
+    \hline
+    \end{tabular}
+\end{center}
+
+After first level experiments, we are almost sure linear model does not play well with this inherently nonlinear interactions governing molecular systems. We would not consider linear methods any more when using Morgan fingerprints. Note SVM is only trained with subset of data because it is too time-consuming if trained with whole dataset, and training with more data does not improve the score much, we can assume SVM does not convergence in this case and will no longer use it at higher level either.
+
+In addition, third level with 2048-bit data has result as follows. Random forest results in the smallest error still. Note some of the cases are labeled 1024-bit, Morgan fingerprints can be generated as either 1024-bit or 2048-bit, we played with 1024-bit initially and converted to 2048-bit latter, but will present them altogether here. We also put a ridge regression performance here as a benchmark.
+
+\begin{center}
+    \begin{tabular}{| l | l ||}
+    \hline
+    \textbf{Method} & \textbf{Score (error)} \\ \hline
+    Ridge regression (1024-bit) & 0.14337 \\ \hline
+    Random forest (1024-bit) & 0.6446 \\ \hline
+    Decision Tree (1024-bit) & 0.08563 \\ \hline
+    Random forest (2048-bit) & 0.06148 \\ \hline
+    Gradient Boosting (2048-bit) & 0.17057 \\ \hline
+    \hline
+    \end{tabular}
+\end{center}
+
+We held the first place on leaderboard with $0.6148$ until the last 5 days beat by other teams. Then we continue to try different ways to optimize, but our methods are restricted in tree / ensemble methods, below are our further results. There are three main thoughts during our optimizations
+
+\begin{itemize}
+    \item Data cleaning, remove useless data (all zeros in the same entry of all molecules)
+    \item Parameters adjustment, select features based on feature importance given by random forest regressor
+    \item Data combination, find out more features from RDKit and combine together to acquire additional infomation
+\end{itemize}
+
+\begin{center}
+    \begin{tabular}{|l|l||}
+    \hline
+    \textbf{Method} & \textbf{Score (error)} \\ \hline
+    Random forest (parameters optimized) & 0.06004 \\ \hline
+    Random forest (new fingerprinting, MACCS) & 0.23402 \\ \hline
+    Random forest (combined fingerprints of MACCS and Morgan) & 0.06013 \\ \hline
+    Extra tree (945-bit, selected important features) & 0.05899  \\ \hline
+    \hline
+    \end{tabular}
+\end{center}
