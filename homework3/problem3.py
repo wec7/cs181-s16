@@ -101,6 +101,67 @@ class BudgetKernelPerceptron(KernelPerceptron):
         self.sv_y = y[sv]
         print "%d support vectors out of %d points" % (len(self.alpha), n_samples)
 
+class SMO(KernelPerceptron):
+    def __init__(self, C, tol, max_passes, numsamples, kernel=linear_kernel):
+        self.C = C
+        self.tol = tol 
+        self.max_passes = max_passes
+        self.alpha = np.zeros(n_samples, dtype=np.float64)
+        self.passes = 0
+
+    def fit(self, X, y):
+
+        # Kernel
+        K = np.zeros((n_samples, n_samples))
+        for i in range(n_samples):
+            for j in range(n_samples):
+                K[i,j] = self.kernel(X[i], X[j])
+
+        while (self.passes < self.max_passes):
+            num_changed_alphas = 0
+            n_samples, n_features = X.shape
+            for i in range(n_samples):
+                Ei = np.sum(K[:,i] * self.alpha * y) - y[i]
+                if (y[i]*Ei < -self.tol and self.alpha[i] < self.C) or (y[i]*Ei > self.tol and self.alpha[i] > 0):
+                    j = (i+1) % n_samples
+                    Ej = np.sum(K[:,j] * self.alpha * y) - y[j]
+                    alpha_i_old = self.alpha[i]
+                    alpha_j_old = self.alpha[j]
+                    if y[i] != y[j]:
+                        L = max(0, self.alpha[j] - self.alpha[i])
+                        H = min(self.C, self.C + self.alpha[j] - self.alpha[i])
+                    else:
+                        L = max(0, self.alpha[i]+self.alpha[j]-self.C)
+                        H = min(self.C, self.alpha[i] + self.alpha[j])
+                    if L == H:
+                        continue
+                    yita = 2 * K[i,j] - K[i, i] - K[j, j]
+                    if yita >= 0:
+                        continue
+                    self.alpha[j] = self.alpha[j] - y[j] * (Ei -Ej) / yita
+                    if self.alpha[j] > H:
+                        self.alpha[j] = H
+                    elif self.alpha[j] < L:
+                        self.alpha[j] = L
+                    if (abs(self.alpha[j] - alpha_j_old) < 1e-5):
+                        continue
+                    self.alpha[i] = self.alpha[i] + y[i]*y[j]*(alpha_j_old-self.alpha[j])
+                    b_1 = b - Ei - y[i]*(self.alpha[i]-alpha_i_old)*K[i,i] - y[j]*(self.alpha[j]-alpha_j_old)*K[i,j]
+                    b_2 = b - Ej - y[i]*(self.alpha[i]-alpha_i_old)*K[i,j] - y[j]*(self.alpha[j]-alpha_j_old)*K[j,j]
+                    if self.alpha[i] > 0 and self.alpha[i] < C:
+                        self.b = b_1
+                    elif self.alpha[j] > 0 and self.alpha[j] < C:
+                        self.b = b_2
+                    else:
+                        self.b = (b_1+b_2) / 2.
+                    num_changed_alphas += 1
+            if num_changed_alphas == 0:
+                passes += 1
+            else:
+                passes = 0
+        return
+
+
 class LaSVM(KernelPerceptron):
     def __init__(self, C, kernel, tau, eps=0.001):
         self.S = []
