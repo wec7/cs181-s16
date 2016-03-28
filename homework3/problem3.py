@@ -212,11 +212,11 @@ beta = 0
 N = 100
 numsamples = 2000
 
-kernel_file_name = 'k.png'
+kernel_file_name = 'polynomial_kernel.png'
 budget_kernel_file_name = 'bk.png'
 
 # Don't change things below this in your final version. Note that you can use the parameters above to generate multiple graphs if you want to include them in your writeup.
-k = KernelPerceptron(numsamples, kernel=gaussian_kernel)
+k = KernelPerceptron(numsamples, kernel=polynomial_kernel)
 k.fit(X,Y)
 k.visualize(kernel_file_name, width=0, show_charts=True, save_fig=True, include_points=False)
 
