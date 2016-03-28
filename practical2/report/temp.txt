@@ -1,0 +1,16 @@
+%\section*{1. Introduction}
+In this practical we apply machine learning algorithms to the problem of computer malware classification. We have the following $14$ kinds of malwares to classify: Agent, AutoRun, FraudLoad, FraudPack, Hupigon, Krap, Lipler, Magania, Poison, Swizzor, Tdss, VB, Virut, and Zbot. Plus one additional class of non-malware so in total we have 15 classes. We have 3086 xml files for training and 3724 xml files for testing. Each xml file has a tree like structure which contains the following layers: processes, process, thread, all sections, and system calls. The system calls are the key input data for malware classification. Each call runs certain command such as 'load_image' or 'load_dll' with keyed attributes such as filename or size. The Python xml ElementTree library is used here to navigate the xml tree structure and extract system calls.
+$x$
+
+The rest of the report is organized as follows: we start by explaininng how we extract features and how we decide the importance of features, followed by the detailed analysis of testing different types of algorithms including Random Forest, Extra Random Tree, and Support Vector Machine. The last section conclude the report with our best score on Kaggle.
+%\section*{2. Feature Extraction}
+We think of the following features to extract from the xml files:
+\begin{enumerate}
+\item The number of each type of system calls in the xml file.
+\item The structure of the system calls within the file.
+\item The attributes of each call.
+\end{enumerate}
+For No. 1, we first run through all training samples and determine the universe of system calls appeared in the file, and exclude the four structural tags: processes, process, thread, all_section.  
+%\section*{3. Algorithms}
+\subsection*{3.1 Random Forest Classification}
+%\section*{4. Conclusion}

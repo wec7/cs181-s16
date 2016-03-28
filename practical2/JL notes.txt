@@ -1,0 +1,135 @@
+To do, test SVC
+Try Gaussian Generative and Lr in sklearn
+Try NN
+
+
+Plan: 2/27/16
+1. get some features
+2. RF for whole set, look at results and important features
+3. take a couple of mis classified classes, examine and improve features
+4. RF again,
+5. Try other learner, logistic regression, Gaussian generative model, maybe NN
+
+FeatNNures:
+Try actual numbers, then binary
+tree.iter: 
+items to give all details, tuples; keys only gives attributes
+Ex: el.getchildren()[0].getchildren()[0].getchildren()[0].getchildren()[0].items()
+
+RF_df_tr_1hf in-sample error: 0.0181464679196
+RF_df_tr_1hf out-sample error: 0.122488658458
+
+RF_df_tr_1hf in-sample error: 0.0174983797797
+RF_df_tr_1hf out-sample error: 0.121192482178
+
+RF_df_tr_2hf in-sample error: 0.0207388204796
+RF_df_tr_2hf out-sample error: 0.134802333117
+
+
+RF_est_tr_1hf n_estimators: 10 in-sample error: 0.0155541153597 out-sample error: 0.127025275437
+RF_est_tr_1hf n_estimators: 20 in-sample error: 0.0149060272197 out-sample error: 0.117952041478
+RF_est_tr_1hf n_estimators: 30 in-sample error: 0.0129617627997 out-sample error: 0.113415424498
+RF_est_tr_1hf n_estimators: 40 in-sample error: 0.0129617627997 out-sample error: 0.116655865198
+RF_est_tr_1hf n_estimators: 50 in-sample error: 0.0129617627997 out-sample error: 0.116655865198
+RF_est_tr_1hf n_estimators: 100 in-sample error: 0.0129617627997 out-sample error: 0.119248217758
+RF_est_tr_1hf n_estimators: 200 in-sample error: 0.0129617627997 out-sample error: 0.114711600778
+
+RF_mft_tr_1hf n_estimators: 30 max_features 5 in-sample error: 0.0129617627997 out-sample error: 0.121192482178
+RF_mft_tr_1hf n_estimators: 30 max_features 10 in-sample error: 0.0136098509397 out-sample error: 0.117952041478
+RF_mft_tr_1hf n_estimators: 30 max_features 15 in-sample error: 0.0142579390797 out-sample error: 0.119248217758
+RF_mft_tr_1hf n_estimators: 30 max_features 20 in-sample error: 0.0129617627997 out-sample error: 0.123136746598
+RF_mft_tr_1hf n_estimators: 30 max_features 25 in-sample error: 0.0129617627997 out-sample error: 0.121192482178
+RF_mft_tr_1hf n_estimators: 30 max_features 30 in-sample error: 0.0136098509397 out-sample error: 0.114711600778
+RF_mft_tr_1hf n_estimators: 30 max_features 40 in-sample error: 0.0142579390797 out-sample error: 0.123136746598
+RF_mft_tr_1hf n_estimators: 30 max_features 50 in-sample error: 0.0129617627997 out-sample error: 0.121192482178
+RF_mft_tr_1hf n_estimators: 30 max_features 102 in-sample error: 0.0142579390797 out-sample error: 0.125729099157
+
+RF_mft_tr_1hf n_estimators: 30 max_features 5 in-sample error: 0.0136098509397 out-sample error: 0.118600129618
+RF_mft_tr_1hf n_estimators: 30 max_features 10 in-sample error: 0.0142579390797 out-sample error: 0.119248217758
+RF_mft_tr_1hf n_estimators: 30 max_features 15 in-sample error: 0.0136098509397 out-sample error: 0.121192482178
+RF_mft_tr_1hf n_estimators: 30 max_features 20 in-sample error: 0.0129617627997 out-sample error: 0.124432922878
+RF_mft_tr_1hf n_estimators: 30 max_features 25 in-sample error: 0.0136098509397 out-sample error: 0.118600129618
+RF_mft_tr_1hf n_estimators: 30 max_features 30 in-sample error: 0.0129617627997 out-sample error: 0.117952041478
+RF_mft_tr_1hf n_estimators: 30 max_features 40 in-sample error: 0.0149060272197 out-sample error: 0.128321451717
+RF_mft_tr_1hf n_estimators: 30 max_features 50 in-sample error: 0.0142579390797 out-sample error: 0.117303953338
+RF_mft_tr_1hf n_estimators: 30 max_features 102 in-sample error: 0.0136098509397 out-sample error: 0.127025275437
+
+
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 2 in-sp error: 0.0129617627997 out-sp error: 0.117952041478
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 5 in-sp error: 0.0246273493195 out-sp error: 0.119896305898
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 10 in-sp error: 0.049902786779 out-sp error: 0.121192482178
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 15 in-sp error: 0.0654569021387 out-sp error: 0.131561892417
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 20 in-sp error: 0.0900842514582 out-sp error: 0.133506156837
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 30 in-sp error: 0.110174983798 out-sp error: 0.143227478937
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 40 in-sp error: 0.114063512638 out-sp error: 0.143227478937
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 50 in-sp error: 0.136098509397 out-sp error: 0.149708360337
+
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 1 in-sp error: 0.0136098509397 out-sp error: 0.120544394038
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 2 in-sp error: 0.0136098509397 out-sp error: 0.121192482178
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 3 in-sp error: 0.0174983797797 out-sp error: 0.116007777058
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 4 in-sp error: 0.0239792611795 out-sp error: 0.119248217758
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 5 in-sp error: 0.0291639662994 out-sp error: 0.116007777058
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 6 in-sp error: 0.0330524951393 out-sp error: 0.123784834738
+
+
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 1 in-sp error: 0.0129617627997 out-sp error: 0.123136746598
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 2 in-sp error: 0.0129617627997 out-sp error: 0.120544394038
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 3 in-sp error: 0.0142579390797 out-sp error: 0.117303953338
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 4 in-sp error: 0.0213869086196 out-sp error: 0.114063512638
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 5 in-sp error: 0.0259235255995 out-sp error: 0.121840570318
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 6 in-sp error: 0.0304601425794 out-sp error: 0.120544394038
+
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 1 in-sp error: 0.0136098509397 out-sp error: 0.123784834738
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 2 in-sp error: 0.0136098509397 out-sp error: 0.125729099157
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 3 in-sp error: 0.0194426441996 out-sp error: 0.124432922878
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 4 in-sp error: 0.0259235255995 out-sp error: 0.120544394038
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 5 in-sp error: 0.0298120544394 out-sp error: 0.118600129618
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 6 in-sp error: 0.0272197018795 out-sp error: 0.121840570318
+
+
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 1 in-sp error: 0.0129617627997 out-sp error: 0.123784834738
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 2 in-sp error: 0.0129617627997 out-sp error: 0.128321451717
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 3 in-sp error: 0.0187945560596 out-sp error: 0.114063512638
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 4 in-sp error: 0.0213869086196 out-sp error: 0.118600129618
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 5 in-sp error: 0.0265716137395 out-sp error: 0.126377187297
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 6 in-sp error: 0.0304601425794 out-sp error: 0.120544394038
+
+full count:
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 4 in-sp error: 0.0233311730395 out-sp error: 0.117303953338
+RF_spl_tr_1hf n_est: 30 max_ft 30 min_sp_spl 4 in-sp error: 0.0207388204796 out-sp error: 0.114063512638
+
+binary feature, 1% worse
+RF_bin_tr_1hf n_est: 30 max_ft 30 min_sp_spl 4 in-sp error: 0.0375891121192 out-sp error: 0.126377187297
+RF_bin_tr_1hf n_est: 30 max_ft 30 min_sp_spl 4 in-sp error: 0.0395333765392 out-sp error: 0.126377187297
+
+normalize
+RF_nrm_tr_1hf n_est: 30 max_ft 30 min_sp_spl 4 in-sp error: 0.0181464679196 out-sp error: 0.114711600778
+RF_nrm_tr_1hf n_est: 30 max_ft 30 min_sp_spl 4 in-sp error: 0.0200907323396 out-sp error: 0.124432922878
+RF_nrm_tr_1hf n_est: 30 max_ft 30 min_sp_spl 4 in-sp error: 0.0187945560596 out-sp error: 0.117952041478
+RF_nrm_tr_1hf n_est: 30 max_ft 30 min_sp_spl 4 in-sp error: 0.0194426441996 out-sp error: 0.119896305898
+
+ET:
+ET_df_cont_tr_1hf n_est: 10 max_ft auto min_sp_spl 2 in-sp error: 0.0129617627997 out-sp error: 0.128321451717
+ET_sel_cont_tr_1hf n_est: 30 max_ft 30 min_sp_spl 4 in-sp error: 0.0174983797797 out-sp error: 0.124432922878
+ET_sel_cont_tr_1hf n_est: 30 max_ft 30 min_sp_spl 4 in-sp error: 0.0181464679196 out-sp error: 0.116007777058
+ET_sel_cont_tr_1hf n_est: 30 max_ft 30 min_sp_spl 4 in-sp error: 0.0162022034997 out-sp error: 0.114711600778
+
+RF: Perform slightly better, so far the best score with ET parameters
+
+# important features only: 40 percentile
+ET_cont_tr_1hf n_est: 30 max_ft 10 min_sp_spl 4 in-sp error: 0.0174983797797 out-sp error: 0.114063512638
+
+shared covariance
+GG_cont_tr_1hf shared_covariance: True in-sp error: 0.211276733636 out-sp error: 0.236552171095
+separate covariance keep running into singular matrix
+
+LR, not solvable ... :(
+
+
+
+Q: How to make variables in main available?
+shift tab?
+difference of two dicts, Counter minus doesn't return neg values
+
+WARNING (theano.configdefaults): g++ not detected ! Theano will be unable to execute optimized C-implementations (for both CPU and GPU) and will default to Python implementations. Performance will be severely degraded. To remove this warning, set Theano flags cxx to an empty string.
+WARNING:theano.configdefaults:g++ not detected ! Theano will be unable to execute optimized C-implementations (for both CPU and GPU) and will default to Python implementations. Performance will be severely degraded. To remove this warning, set Theano flags cxx to an empty string.n
