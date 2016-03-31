@@ -18,6 +18,7 @@ class KMeans(BasicKMeans):
 
 	# X is a (N x 28 x 28) array where 28x28 is the dimensions of each of the N images.
 	def fit(self, X):
+		self.X = X
 		return super(KMeans, self).fit(X)
 
 	# This should return the arrays for K images. Each image should represent the mean of each of the fitted clusters.
