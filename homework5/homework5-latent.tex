@@ -1,0 +1,123 @@
+\documentclass[submit]{harvardml}
+
+% Put in your full name and email address.
+\name{Your Name}
+\email{email@fas.harvard.edu}
+
+% List any people you worked with.
+\collaborators{%
+  John Doe,
+  Fred Doe
+}
+
+% You don't need to change these.
+\course{CS181-S16}
+\assignment{Assignment \#5}
+\duedate{5:00pm April 15, 2016}
+
+\usepackage[OT1]{fontenc}
+\usepackage[colorlinks,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage[pdftex]{graphicx}
+\usepackage{subfig}
+\usepackage{fullpage}
+\usepackage{palatino}
+\usepackage{mathpazo}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage{todonotes}
+\usepackage{listings}
+\usepackage{common}
+\usepackage{bm}
+\usepackage{enumitem}
+
+\usepackage[mmddyyyy,hhmmss]{datetime}
+
+\definecolor{verbgray}{gray}{0.9}
+
+\lstnewenvironment{csv}{%
+  \lstset{backgroundcolor=\color{verbgray},
+  frame=single,
+  framerule=0pt,
+  basicstyle=\ttfamily,
+  columns=fullflexible}}{}
+
+\begin{document}
+\begin{center}
+{\Large Homework 5: EM for a Simple Topic Model}\\
+\end{center}
+
+There is a mathematical component and a programming component to this homework.
+Please submit ONLY your PDF to Canvas, and push all of your work to your Github
+repository. If a question requires you to make any plots, please
+include those in the writeup.
+
+\begin{mdframed}[style=exampledefault]
+\textbf{Background:} In this homework, you will implement a very simple kind of topic model.  Latent Dirichlet allocation, as we discussed in class, is a topic model in which each document is composed of multiple topics.  Here we will make a simplified version in which each document has just a single topic.  As in LDA, the vocabulary will have~$V$ words and a topic will be a distribution over this vocabulary.  Let's use~$K$ topics and the~$k$th topic is a vector~$\bbeta_k$, where~${\beta_{k,v}\geq 0}$ and~${\sum_v \beta_{k,v}=1}$.  Each document can be described by a set of word counts~$\boldw_{d}$, where~$w_{d,v}$ is a nonnegative integer.  Document~$d$ has~$N_d$ words in total, i.e.,~${\sum_v w_{d,v}=N_d}$.  Let's have the unknown overall mixing proportion of topics be~$\btheta$, where~${\theta_k\geq 0}$ and~${\sum_k\theta_k=1}$.  Our generative model is that each of the~$D$ documents has a single topic~${z_d\in \{1,\ldots,K\}}$, drawn from~$\btheta$; then, each of the words is drawn from~$\bbeta_{z_d}$.
+
+\end{mdframed}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Problem 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{problem}[Complete Data Log Likelihood, 4 pts]
+
+Write the complete-data log likelihood~$\ln p(\{z_d,\boldw_d\}^D_{d=1}\given\btheta, \{\bbeta_k\}^K_{k=1})$. It may be convenient to write~$z_d$ as a one-hot coded vector~$\boldz_d$.
+
+
+\end{problem}
+\subsection*{Solution}
+
+
+\newpage
+\begin{problem}[Expectation Step, 5pts]
+
+Introduce estimates~$q(\boldz_d)$ for the posterior over the hidden variables~$\boldz_d$.  What did you choose and why?  Write down how you would determine the parameters of these estimates, given the observed data~$\{\boldw_d\}^D_{d=1}$ and the parameters~$\btheta$ and~$\{\bbeta_k\}^K_{k=1}$.
+
+\end{problem}
+\subsection*{Solution}
+
+\newpage
+
+\begin{problem}[Maximization Step, 5pts]
+With the~$q(\boldz_d)$ estimates in hand from the E-step, derive an update for maximizing the expected complete data log likelihood in terms of~$\btheta$ and~$\{\bbeta_k\}^K_{k=1}$.
+
+\begin{enumerate}[label=(\alph*)]
+    \item Derive an expression for the expected complete data log likelihood for fixed $\gamma$'s. 
+    \item Find a value of $\theta$ that maximizes the expected complete data log likelihood derived in (a). You may find it helpful to use Lagrange multipliers in order to force the constraint $\sum \theta_k = 1$. Why does this optimized $\theta$ make intuitive sense?
+    \item Apply a similar argument to find the value of $\beta_{k, v}$ that maximizes the expected complete data log likelihood. 
+\end{enumerate}
+
+\end{problem}
+\subsection*{Solution}
+
+\newpage
+
+
+\begin{problem}[Implementation, 10pts]
+Implement this expectation maximization algorithm and try it out on some text data.  In order for the EM algorithm to work, you may have to do a little preprocessing.  
+
+$\linebreak$
+\noindent The starter code loads the text data as a numpy array that is $5224951 \times 3$ in size. As shown below, the first number in the numpy array represents the document\_id, the second number represents a word\_id, and the third number is the count the word appears. 
+
+
+$$ [\text{doc\_id, word\_id, count}]$$
+
+\noindent A dictionary of the mappings between word\_ids and words is also provided. The full dataset description can be found at \url{http://kdd.ics.uci.edu/databases/nsfabs/nsfawards.data.html}.\\ 
+
+
+
+\noindent Plot the objective function as a function of iteration and verify that it never increases. Try different numbers of topics and report what topics you find by, e.g., listing the most likely words. 
+
+
+
+\end{problem}
+\subsection*{Solution}
+
+\newpage
+\begin{problem}[Calibration, 1pt]
+Approximately how long did this homework take you to complete?
+\end{problem}
+
+
+\end{document}
