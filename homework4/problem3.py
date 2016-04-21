@@ -24,24 +24,15 @@ class KMeans(BaseKMeans):
 		distances = self.__getdistances()
 		return np.amin(distances, axis=1)
 
-
 	def __initialize_means_pp(self):
-		# Pick a point to be the first mean
 		first_mean = self.X[np.random.choice(self.X.shape[0])]
-		# Set all of the means to be the first mean
 		self.means = np.zeros((self.K, self.X.shape[1])) + first_mean
 
-		# Pick the rest of the means
 		for i in range(1, self.K):
-			#print i
-			# Get the distance to the cloest mean for each point
 			closest_distances_sq = np.power(self.__distances_to_closest_mean(), 2)
-			# Normalize
 			normalized = closest_distances_sq/np.sum(closest_distances_sq)
-
 			pick = np.random.choice(self.X.shape[0], p=normalized)
 			self.means[i] = self.X[pick]
-			#print self.means[i]
 
 	def __objective(self):
 		distances = self.__getdistances()
@@ -51,32 +42,24 @@ class KMeans(BaseKMeans):
 	def __update_means(self):
 		for k in range(self.K):
 			in_class_values = self.X[self.assignments == k]
-			#print(len(in_class_values))
 			self.means[k] = np.mean(in_class_values, axis=0)
 
-	#def __initialize_assignments(self):
-	#	self.assignments = np.random.randint(self.K, size=self.X.shape[0])
-
 	def __initialize_means(self):
-		#self.means = np.zeros((self.K, self.X.shape[1]))
 		self.means = np.random.randn(self.K, self.X.shape[1])
-		#self.__update_means()
 
-	# Returns an N x K array, where Distances_nk is the distance from point n to mean of cluster k
 	def __getdistances(self):
 		distances = np.zeros((self.X.shape[0], self.K))
 		for k in range(self.K):
 			distances[:, k] = np.sum(np.power(self.X - self.means[k], 2), axis=1)
 		return distances
+
 	def __update_assignments(self):
 		distances = self.__getdistances()
 		self.assignments = np.argmin(distances, axis=1)
 
-	# Get indicies into n smallest values of numpy array
 	def __get_d_smallest(self, arr, n):
 		return arr.argsort()[:n]
 
-	# X is a (N x 28 x 28) array where 28x28 is the dimensions of each of the N images.
 	def fit(self, X):
 		self.X = X.reshape(X.shape[0], X.shape[1]*X.shape[2])
 		self.objective_vals = []
@@ -162,8 +145,3 @@ for k in xrange(K):
 	KMeansClassifier.create_image_from_array(mean_images[k],'K10-mean-%s'%k)
 	for i, img in enumerate(representative_images[k]):
 		KMeansClassifier.create_image_from_array(img, "K10-representative-%s-%s"%(k,i))
-
-
-
-
-
