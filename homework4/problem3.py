@@ -20,61 +20,34 @@ class KMeans(BaseKMeans):
 		else:
 			super(KMeans, self).__init__(n_clusters=K, init="random", verbose=1)
 
-	def __distances_to_closest_mean(self):
-		distances = self.__getdistances()
-		return np.amin(distances, axis=1)
-
-	def __initialize_means_pp(self):
-		first_mean = self.X[np.random.choice(self.X.shape[0])]
-		self.means = np.zeros((self.K, self.X.shape[1])) + first_mean
-
-		for i in range(1, self.K):
-			closest_distances_sq = np.power(self.__distances_to_closest_mean(), 2)
-			normalized = closest_distances_sq/np.sum(closest_distances_sq)
-			pick = np.random.choice(self.X.shape[0], p=normalized)
-			self.means[i] = self.X[pick]
-
-	def __objective(self):
-		distances = self.__getdistances()
-		elements = distances[np.arange(self.X.shape[0]), self.assignments]
-		return np.sum(elements)
-
-	def __update_means(self):
-		for k in range(self.K):
-			in_class_values = self.X[self.assignments == k]
-			self.means[k] = np.mean(in_class_values, axis=0)
-
-	def __initialize_means(self):
-		self.means = np.random.randn(self.K, self.X.shape[1])
-
-	def __getdistances(self):
+	def __get_dist(self):
 		distances = np.zeros((self.X.shape[0], self.K))
 		for k in range(self.K):
 			distances[:, k] = np.sum(np.power(self.X - self.means[k], 2), axis=1)
 		return distances
 
-	def __update_assignments(self):
-		distances = self.__getdistances()
-		self.assignments = np.argmin(distances, axis=1)
-
-	def __get_d_smallest(self, arr, n):
-		return arr.argsort()[:n]
-
 	def fit(self, X):
 		self.X = X.reshape(X.shape[0], X.shape[1]*X.shape[2])
 		self.objective_vals = []
 		if self.useKMeansPP:
-			self.__initialize_means_pp()
+			first_mean = self.X[np.random.choice(self.X.shape[0])]
+			self.means = np.zeros((self.K, self.X.shape[1])) + first_mean
+
+			for i in range(1, self.K):
+				closest_distances_sq = np.power(np.amin(self.__get_dist(), axis=1), 2)
+				normalized = closest_distances_sq/np.sum(closest_distances_sq)
+				pick = np.random.choice(self.X.shape[0], p=normalized)
+				self.means[i] = self.X[pick]
 		else:
-			self.__initialize_means()
-		print "Done initializing means"
+			self.means = np.random.randn(self.K, self.X.shape[1])
 		for i in range(100):
-			print i
-			self.__update_assignments()
-			self.objective_vals.append(self.__objective())
-			self.__update_means()
-			self.objective_vals.append(self.__objective())
-		print "Final Objective:", self.__objective()
+			obj = np.sum(self.__get_dist()[np.arange(self.X.shape[0]), self.assignments])
+			self.assignments = np.argmin(self.__get_dist(), axis=1)
+			self.objective_vals.append(obj)
+			for k in range(self.K):
+				in_class_values = self.X[self.assignments == k]
+				self.means[k] = np.mean(in_class_values, axis=0)
+			self.objective_vals.append(obj)
 		# self.X = [np.reshape(pic, 28*28) for pic in X]
 		# return super(KMeans, self).fit(self.X)
 
@@ -98,9 +71,9 @@ class KMeans(BaseKMeans):
 	# This should return the arrays for D images from each cluster that are representative of the clusters.
 	def get_representative_images(self, D):
 		self.representatives = np.zeros((self.K, D))
-		distances = self.__getdistances()
+		distances = self.__get_dist()
 		for k in range(self.K):
-			self.representatives[k] = self.__get_d_smallest(distances[:, k], D)
+			self.representatives[k] = distances[:, k].argsort()[:D]
 		return self.representatives
 		# na = self.predict
 		# df = pd.DataFrame(self.X)
