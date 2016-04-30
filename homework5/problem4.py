@@ -8,16 +8,86 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import lda
+import lda._lda
+import lda.utils
 
-class LDA(lda.LDA):
+class LDA(object):
 
-    # This should run the M step of the EM algorithm
-    def M_step(self):
-        pass
+    def __init__(self, n_topics, n_iter=2000):
+        self.n_topics = n_topics
+        self.n_iter = n_iter
+        self.alpha = 0.1
+        self.eta = 0.01
+        self.random_state = None
+        self.refresh = 10
 
-    # This should run the E step of the EM algorithm
-    def E_step(self):
-        pass
+        if alpha <= 0 or eta <= 0:
+            raise ValueError("alpha and eta must be greater than zero")
+
+        # random numbers that are reused
+        rng = lda.utils.check_random_state(random_state)
+        self._rands = rng.rand(1024**2 // 8)  # 1MiB of random variates
+
+    def fit(self, X):
+        random_state = self.random_state
+        rands = self._rands.copy()
+        self._initialize(X)
+        for it in range(self.n_iter):
+            random_state.shuffle(rands)
+            if it % self.refresh == 0:
+                ll = self.loglikelihood()
+                # keep track of loglikelihoods for monitoring convergence
+                self.loglikelihoods_.append(ll)
+            self._sample_topics(rands)
+        ll = self.loglikelihood()
+        # note: numpy /= is integer division
+        self.components_ = (self.nzw_ + self.eta).astype(float)
+        self.components_ /= np.sum(self.components_, axis=1)[:, np.newaxis]
+        self.topic_word_ = self.components_
+        self.doc_topic_ = (self.ndz_ + self.alpha).astype(float)
+        self.doc_topic_ /= np.sum(self.doc_topic_, axis=1)[:, np.newaxis]
+
+        # delete attributes no longer needed after fitting to save memory and reduce clutter
+        del self.WS
+        del self.DS
+        del self.ZS
+        return self
+
+    def _initialize(self, X):
+        D, W = X.shape
+        N = int(X.sum())
+        n_topics = self.n_topics
+        n_iter = self.n_iter
+
+        self.nzw_ = nzw_ = np.zeros((n_topics, W), dtype=np.intc)
+        self.ndz_ = ndz_ = np.zeros((D, n_topics), dtype=np.intc)
+        self.nz_ = nz_ = np.zeros(n_topics, dtype=np.intc)
+
+        self.WS, self.DS = WS, DS = lda.utils.matrix_to_lists(X)
+        self.ZS = ZS = np.empty_like(self.WS, dtype=np.intc)
+        np.testing.assert_equal(N, len(WS))
+        for i in range(N):
+            w, d = WS[i], DS[i]
+            z_new = i % n_topics
+            ZS[i] = z_new
+            ndz_[d, z_new] += 1
+            nzw_[z_new, w] += 1
+            nz_[z_new] += 1
+        self.loglikelihoods_ = []
+
+    def loglikelihood(self):
+        nzw, ndz, nz = self.nzw_, self.ndz_, self.nz_
+        alpha = self.alpha
+        eta = self.eta
+        nd = np.sum(ndz, axis=1).astype(np.intc)
+        return lda._lda._loglikelihood(nzw, ndz, nz, nd, alpha, eta)
+
+    def _sample_topics(self, rands):
+        n_topics, vocab_size = self.nzw_.shape
+        alpha = np.repeat(self.alpha, n_topics).astype(np.float64)
+        eta = np.repeat(self.eta, vocab_size).astype(np.float64)
+        lda._lda._sample_topics(self.WS, self.DS, self.ZS, self.nzw_, self.ndz_, self.nz_,
+                                alpha, eta, rands)
 
     def Vocab(self):
     	with open('words.txt', 'r') as f:
