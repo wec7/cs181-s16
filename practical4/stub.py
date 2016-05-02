@@ -22,9 +22,6 @@ class Learner(object):
             self.k = np.zeros((2,SwingyMonkey.screen_width/50+1,SwingyMonkey.screen_height/50+1,5)) # number of times action a has been taken from state s
             self.iters = 0
             self.mem = [0, 0]
-            self.scores = []
-            self.best_score = 50
-            self.bestQ = None
         else:
             self.last_feat = None
             self.gravity = 2.0
